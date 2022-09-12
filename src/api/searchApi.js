@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-const key = 'AIzaSyDZZnE3YXfKj_g6XrOYHc0jfrK3i3Jd7V4'
+const key = "AIzaSyBExIRi0i7yTE9MkhJYyGVDdKx_3qv0oDk"
 const searchApi = {
     getAll(){
         const url = `/search?part=snippet&key=${key}`;

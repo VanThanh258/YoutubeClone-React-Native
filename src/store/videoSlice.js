@@ -8,8 +8,12 @@ const videoSlice = createSlice({
     },
     extraReducers:(builder) => {
         builder
+        .addCase(fetchVideo.pending, (state, action) => {
+            state.status = 'loadding'
+        })
         .addCase(fetchVideo.fulfilled, (state, action) => {
             state.listVideo = action.payload;
+            state.status = 'idle'
         })
     }
 })

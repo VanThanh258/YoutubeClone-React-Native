@@ -3,23 +3,24 @@ import React from 'react'
 import { Entypo } from '@expo/vector-icons';
 
 const VideoCardHome = (props) => {
+
   return (
-    <Pressable style={{marginTop: 5}}>
+    <Pressable style={{marginTop: 5}} onPress={props.onNavigation}>
       {/* Video component */}
       <View>
         {/* Thumbnail */}
           <View>
             <Image style={styles.thumbnail} source={{uri: props.thumbnail}}/>
-            <View style={styles.timeContainer}>
+            {/* <View style={styles.timeContainer}>
               <Text style={styles.time}>15:23</Text>
-            </View>
+            </View> */}
           </View>
         {/* Title row */}
           <View style={styles.titleRow}>
             <Image style={styles.avatar} source={require('../images/imageCard/Thum.png')}/>
             <View style={styles.content}>
-              <Text style={styles.titleContent}>The Beauty of Existence - Heart Touching Nasheed</Text>
-              <Text style={styles.subContent}>19,210,251 viewsJul • 1, 2016</Text>
+              <Text style={styles.titleContent}>{props.title}</Text>
+              <Text style={styles.subContent}>{props.channelTitle} - {props.view} lượt xem - {props.time}</Text>
             </View>
             <Entypo name="dots-three-vertical" size={20} color="black" />
           </View>

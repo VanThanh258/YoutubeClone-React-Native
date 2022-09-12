@@ -1,9 +1,9 @@
 import axios from "axios";
-
 const axiosClient = axios.create({
     baseURL: 'https://youtube.googleapis.com/youtube/v3/',
     headers:{
         'Content-type': 'application/json',
+        'Accept': 'application/json'
     },
 })
 

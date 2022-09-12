@@ -1,11 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-const Shorts = () => {
+
+const WatchVideo = () => {
   return (
     <View>
-      <Text>Shorts</Text>
+      <Text>watchVideo</Text>
     </View>
   )
 }
 
-export default Shorts
+export default WatchVideo

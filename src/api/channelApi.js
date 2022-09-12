@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
-const key = 'AIzaSyDZZnE3YXfKj_g6XrOYHc0jfrK3i3Jd7V4'
+const key = "AIzaSyBExIRi0i7yTE9MkhJYyGVDdKx_3qv0oDk"
 const channelApi = {
-    getAll(){
-        const url = `/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UCE_M8A5yxnLfW0KghEeajjw&key=${key}`;
+    getChannel(id){
+        const url = `/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&maxResults=50&key=${key}`;
         return axiosClient.get(url);
     },
 }
