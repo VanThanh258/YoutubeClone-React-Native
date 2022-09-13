@@ -2,16 +2,20 @@ import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native
 import React from 'react'
 import  Constants  from 'expo-constants'
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 const HeaderSearch = (props) => {
   return (
     <View style={styles.container} >
         <TouchableOpacity onPress={props.onGoBack}>
             <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <TextInput style={styles.search} placeholder='Tìm kiếm trên Youtube'/>
-        <TouchableOpacity style={styles.record}>
-        <MaterialCommunityIcons name="microphone" size={24} color="black" />
+        <TextInput 
+        style={styles.search} 
+        placeholder='Tìm kiếm trên Youtube' 
+        onChangeText={props.onChangeText} 
+        onSubmitEditing={props.onSearch}/>
+        <TouchableOpacity style={styles.record} >
+        <FontAwesome name="search" size={18} color="black" />
         </TouchableOpacity>
     </View>
   )

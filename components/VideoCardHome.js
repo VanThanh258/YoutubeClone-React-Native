@@ -20,7 +20,7 @@ const VideoCardHome = (props) => {
             <Image style={styles.avatar} source={require('../images/imageCard/Thum.png')}/>
             <View style={styles.content}>
               <Text style={styles.titleContent}>{props.title}</Text>
-              <Text style={styles.subContent}>{props.channelTitle} - {props.view} lượt xem - {props.time}</Text>
+              <Text style={styles.subContent}>{props.channelTitle} - {props.view} - {props.time}</Text>
             </View>
             <Entypo name="dots-three-vertical" size={20} color="black" />
           </View>

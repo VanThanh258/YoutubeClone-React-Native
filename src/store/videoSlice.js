@@ -3,8 +3,13 @@ import videoApi from "../api/videoApi";
 const videoSlice = createSlice({
     name: 'video',
     initialState:{
-        listVideo: [],
+        listVideo: {},
         status: 'idle'
+    },
+    reducers:{
+        setListVideo(state, action){
+            state.listVideo = action.payload
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -12,11 +17,13 @@ const videoSlice = createSlice({
             state.status = 'loadding'
         })
         .addCase(fetchVideo.fulfilled, (state, action) => {
-            state.listVideo = action.payload;
+            state.listVideo = action.payload
             state.status = 'idle'
         })
     }
 })
+
+export const videoSliceAction = videoSlice.actions;
 
 export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => {
     const video = await videoApi.getAll();

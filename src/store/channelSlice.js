@@ -5,6 +5,11 @@ const channelSlice = createSlice({
     initialState:{
         listChannel: [],
     },
+    reducers:{
+        setChannel(state, action){
+            state.listChannel = action.payload;
+        }
+    },
     extraReducers:(builder) => {
         builder
         .addCase(fetchChannel.fulfilled, (state, action) => {
@@ -12,7 +17,7 @@ const channelSlice = createSlice({
         })
     }
 })
-
+export const channelSliceAction = channelSlice.actions;
 export const fetchChannel = createAsyncThunk('channel/fetchChannel', async (id) => {
     const channel = await channelApi.getChannel(id)
     return channel

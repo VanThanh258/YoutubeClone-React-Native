@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
 import  Constants  from 'expo-constants'
+import { FontAwesome } from '@expo/vector-icons'; 
 const Header = (props) => {
   return (
     <View style={styles.container}>
@@ -18,7 +19,7 @@ const Header = (props) => {
         <Image style={styles.image} source={require('../images/imageHeader/Search.png')}/>
         </Pressable>
         <TouchableOpacity>
-        <Image style={styles.image} source={require('../images/imageHeader/User.png')}/>
+        <FontAwesome style={styles.image} name="user-circle" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </View>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
         alignItems:'center', 
         paddingHorizontal: 10,
         paddingVertical: 10,
-        borderBottomWidth: 2,
+        borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
         justifyContent:'space-between',
     },

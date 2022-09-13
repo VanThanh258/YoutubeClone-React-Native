@@ -1,26 +1,22 @@
-import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ScrollView, StyleSheet } from 'react-native'
 import React, { useEffect,useState } from 'react'
 import Header from '../components/Header'
 import VideoCardHome from '../components/VideoCardHome'
 import { useDispatch,useSelector } from 'react-redux';
 import SubHeader from '../components/SubHeader'
-import { fetchVideo } from '../src/store/videoSlice';
+import videoSlice, { fetchVideo, videoSliceAction } from '../src/store/videoSlice';
+
 const Home = ({navigation}) => {
   const video = useSelector(state => state.video)
+  const channel = useSelector(state => state.channel)
   const dispatch = useDispatch();
   const {listVideo, status} = video
   const list = listVideo.items
-  useEffect(() => {
+  const {listChannel} = channel;
+  useEffect( () => {
     dispatch(fetchVideo());
   },[])
-  const handleNavigationToWatchVideo = () => {
-    navigation.navigate('WatchVideo')
-  }
-  // let d = new Date("2022-09-03T04:30:13Z");
-  // let date = d.getTime();
-  // console.log(date)
-  // render view home
-  const renderItem = ({item,index}) => {
+  const renderItem = ({item}) => {
     let datePublicVideo =  new Date(item.snippet.publishedAt);
     let dateNow = new Date();
     let time = dateNow - datePublicVideo;
@@ -38,9 +34,9 @@ const Home = ({navigation}) => {
     }
     let viewString = item.statistics.viewCount;
     if(viewString > 1000000){
-      viewString = (item.statistics.viewCount / 1000000).toFixed(1) + 'm'
+      viewString = (item.statistics.viewCount / 1000000).toFixed(1) + 'm' + ' lượt xem'
     }else if(viewString > 1000){
-      viewString = (item.statistics.viewCount / 1000).toFixed(1) + 'k'
+      viewString = (item.statistics.viewCount / 1000).toFixed(0) + 'k' + ' lượt xem'
     }
     return (
         <VideoCardHome 
@@ -53,13 +49,19 @@ const Home = ({navigation}) => {
         />
     )
   }
-  //go to search
+  
+  //navigation
+  const handleNavigationToWatchVideo = () => {
+    navigation.navigate('WatchVideo')
+  }
   const handleNavigation = () => {
     navigation.navigate('Search')
   }
+  
   return (
-    <View style={{marginBottom: 70}}>
+    <View style={styles.container}>
         <Header onNavigation = {handleNavigation}/>
+        <SubHeader />
         <FlatList
           data={list}
           renderItem={renderItem}
@@ -70,3 +72,9 @@ const Home = ({navigation}) => {
 }
 
 export default Home
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+  },
+})
