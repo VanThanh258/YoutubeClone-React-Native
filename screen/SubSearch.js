@@ -6,7 +6,8 @@ import { useEffect } from 'react'
 import recommendApi from '../src/api/recommendApi'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchRecommend } from '../src/store/recommendSlice'
+import { fetchRecommend, recommendSliceAction } from '../src/store/recommendSlice'
+import { useRoute } from '@react-navigation/native'
 const data = ['Hoài Lâm', 'Đi đâu đó', 'Schannel', 'The masked singer viet nam', 'Trọng hiếu idol', 'Jong kook', 'Hello VietNam']
 const SubSearch = ({navigation}) => {
     const [text,setText] = useState('');
@@ -19,8 +20,9 @@ const SubSearch = ({navigation}) => {
     useEffect(() => {
         dispatch(fetchRecommend(text))
     },[text])
-    const handleNavigationSearch = () => {
-        navigation.push('Search')
+    const handleNavigationSearch = (item) => {
+        setText(item)
+        navigation.push('Search', {search: item})
     }
     const handleGoBack = () => {
         navigation.goBack();
@@ -31,11 +33,15 @@ const SubSearch = ({navigation}) => {
     const handleSetText = (item) => {
         setText(item)
     }
+    const handleSearchVideo = () => {
+        navigation.push('Search', {search: text})
+    }
   return (
     <View style={styles.container}>
       <HeaderSubSearch 
       onGoBack = {handleGoBack}
       onChangeText = {handleChangeText}
+      onSearch = {handleSearchVideo} 
       value={text}
       />
       <ScrollView>
@@ -43,7 +49,7 @@ const SubSearch = ({navigation}) => {
             listWord.map((item,index) => {
                 return (<SubItemSearch 
                     key={index}
-                    onNavigationSearch = {handleNavigationSearch}
+                    onNavigationSearch = {() => handleNavigationSearch(item)}
                     onSetText = {() => handleSetText(item)}
                     text={item}
                     />)

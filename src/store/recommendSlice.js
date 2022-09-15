@@ -4,7 +4,13 @@ const recommendSlice = createSlice({
     name: 'recommend',
     initialState:{
         listWord: [],
-        status: 'idle'
+        status: 'idle',
+        id: 1
+    },
+    reducers:{
+        updateId(state,action){
+            state.id = action.payload
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -15,7 +21,7 @@ const recommendSlice = createSlice({
     }
 })
 
-
+export const recommendSliceAction = recommendSlice.actions
 export const fetchRecommend = createAsyncThunk('recommend/fetchRecommend', async (text) => {
     const recommend = await recommendApi.get(text);
     return recommend.data[1]

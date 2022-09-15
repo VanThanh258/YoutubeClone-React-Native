@@ -1,4 +1,4 @@
-import { View, Text,FlatList } from 'react-native'
+import { View, Text,FlatList, StyleSheet } from 'react-native'
 import React from 'react'
 import HeaderSearch from '../components/HeaderSearch'
 import VideoCardHome from '../components/VideoCardHome'
@@ -6,11 +6,16 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchVideoSearch } from '../src/store/searchSlice'
 import { fetchVideo } from '../src/store/videoSlice'
+import { useRoute } from '@react-navigation/native'
+import { useEffect } from 'react'
 const Search = ({navigation}) => {
+  const {params} = useRoute()
   const dispatch = useDispatch();
   const videoSearch = useSelector(state => state.search);
-  const video = useSelector(state => state.video)
   const {listVideoSearch} = videoSearch;
+  useEffect(() => {
+    dispatch(fetchVideoSearch(params.search));
+  },[])
   // let viewString;
   // for(let i = 0; i<listVideo1.length; i++){
   //   let viewString = listVideo1[i].statistics.viewCount;
@@ -23,14 +28,11 @@ const Search = ({navigation}) => {
   const handleNavigationToWatchVideo = () => {
     navigation.navigate('WatchVideo')
   }
-  const handleSearchVideo = () => {
-    // dispatch(fetchVideoSearch(search));
-  }
   const handleNavigation = () => {
     navigation.popToTop()
   }
-  const handleChangeText = () => {
-
+  const handleFocus = () => {
+    navigation.pop(1)
   }
   const renderItem = ({item}) => {
     let datePublicVideo =  new Date(item.snippet.publishedAt);
@@ -63,15 +65,25 @@ const Search = ({navigation}) => {
     <View>
       <HeaderSearch 
       onGoBack = {handleNavigation} 
-      onSearch = {handleSearchVideo} 
-      onChangeText = {handleChangeText}/>
+      value = {params.search}
+      onFocus = {handleFocus}
+      />
+      <View style={{marginBottom: 100}}>
       <FlatList
           data={listVideoSearch}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
+      </View>
     </View>
   )
 }
 
 export default Search
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    paddingBottom: 10
+  }
+})

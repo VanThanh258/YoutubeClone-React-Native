@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity,TextInput,Image } from 'react-native'
 import React from 'react'
 import  Constants  from 'expo-constants'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
 const HeaderSearch = (props) => {
   return (
     <View style={styles.container} >
@@ -10,12 +11,19 @@ const HeaderSearch = (props) => {
             <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <TextInput 
+        onFocus={props.onFocus}
+        value={props.value}
         style={styles.search} 
         placeholder='Tìm kiếm trên Youtube' 
-        onChangeText={props.onChangeText} 
-        onSubmitEditing={props.onSearch}/>
+        onChangeText={props.onChangeText} />
         <TouchableOpacity style={styles.record} >
         <FontAwesome name="microphone" size={22} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.record}>
+        <Image style={styles.image} source={require('../images/imageHeader/SlideShow.png')}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.record}>
+        <Entypo name="dots-three-vertical" size={24} color="black" />
         </TouchableOpacity>
     </View>
   )

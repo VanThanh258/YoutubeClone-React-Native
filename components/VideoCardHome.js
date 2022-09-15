@@ -5,7 +5,7 @@ import { Entypo } from '@expo/vector-icons';
 const VideoCardHome = (props) => {
   
   return (
-    <Pressable style={{marginTop:5}} onPress={props.onNavigation}>
+    <Pressable style={{marginTop:5,}} onPress={props.onNavigation}>
       {/* Video component */}
       <View>
         {/* Thumbnail */}
@@ -19,7 +19,7 @@ const VideoCardHome = (props) => {
           <View style={styles.titleRow}>
             <Image style={styles.avatar} source={require('../images/imageCard/Thum.png')}/>
             <View style={styles.content}>
-              <Text style={styles.titleContent}>{props.title}</Text>
+              <Text style={styles.titleContent} numberOfLines={2}>{props.title}</Text>
               <Text style={styles.subContent}>{props.channelTitle} - {props.view} - {props.time}</Text>
             </View>
             <Entypo name="dots-three-vertical" size={20} color="black" />

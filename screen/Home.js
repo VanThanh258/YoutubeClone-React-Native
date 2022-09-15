@@ -62,7 +62,7 @@ const Home = ({navigation}) => {
     navigation.push('WatchVideo')
   }
   const handleNavigation = () => {
-    navigation.navigate('SubSearch')
+    navigation.push('SubSearch')
   }
   //Animation hide Header
   const scrollY = new Animated.Value(0)
@@ -75,8 +75,8 @@ const Home = ({navigation}) => {
     scrollY.setValue(e.nativeEvent.contentOffset.y);
     if(listNation){
       if(e.nativeEvent.contentOffset.y > listVideo.length * 300){
-        index = ++index;
-        dispatch(fetchVideoNation(listNation[index].id))
+        // index = ++index;
+        // dispatch(fetchVideoNation(listNation[index].id))
       }
     }
   }
@@ -107,6 +107,7 @@ const Home = ({navigation}) => {
           <Header onNavigation = {handleNavigation}/>
           <SubHeader/>
         </Animated.View>
+        <View>
         <FlatList
           style={{paddingTop: headerHeight}}
           data={listVideo}
@@ -114,7 +115,8 @@ const Home = ({navigation}) => {
           keyExtractor={item => item.id}
           onScroll={handleScoll}
           scrollEventThrottle={16}
-        />
+        /> 
+        </View>
     </View>
   )
 }
