@@ -3,9 +3,9 @@ import React from 'react'
 import { Entypo } from '@expo/vector-icons';
 
 const VideoCardHome = (props) => {
-
+  
   return (
-    <Pressable style={{marginTop: 5}} onPress={props.onNavigation}>
+    <Pressable style={{marginTop:5}} onPress={props.onNavigation}>
       {/* Video component */}
       <View>
         {/* Thumbnail */}

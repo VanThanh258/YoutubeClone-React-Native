@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
       borderRightWidth: 0.5,
       borderColor: 'gray',
       marginVertical: 5,
-
     },
     explore:{
       width: 89,

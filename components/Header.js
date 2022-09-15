@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
-import  Constants  from 'expo-constants'
 import { FontAwesome } from '@expo/vector-icons'; 
 const Header = (props) => {
   return (
@@ -30,7 +29,6 @@ export default Header
 
 const styles = StyleSheet.create({
     container:{
-        marginTop: Constants.statusBarHeight,
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems:'center', 
@@ -39,9 +37,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
         justifyContent:'space-between',
+        position: 'relative'
     },
     logo:{
-        width: 90,
+        width: 95,
         height: 20
     },  
     headerRight:{

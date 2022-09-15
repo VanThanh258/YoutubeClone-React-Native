@@ -3,13 +3,15 @@ import React from 'react'
 import  Constants  from 'expo-constants'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-const HeaderSearch = (props) => {
+const HeaderSubSearch = (props) => {
   return (
     <View style={styles.container} >
         <TouchableOpacity onPress={props.onGoBack}>
             <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <TextInput 
+        value={props.value}
+        autoFocus={true}
         style={styles.search} 
         placeholder='Tìm kiếm trên Youtube' 
         onChangeText={props.onChangeText} 
@@ -21,7 +23,7 @@ const HeaderSearch = (props) => {
   )
 }
 
-export default HeaderSearch
+export default HeaderSubSearch
 
 const styles = StyleSheet.create({
     container:{

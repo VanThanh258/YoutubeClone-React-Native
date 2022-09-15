@@ -10,31 +10,27 @@ const Search = ({navigation}) => {
   const dispatch = useDispatch();
   const videoSearch = useSelector(state => state.search);
   const video = useSelector(state => state.video)
-  const {listVideo} = video;
-  const listVideo1 = listVideo.items;
   const {listVideoSearch} = videoSearch;
-  const list = listVideoSearch.items;
-  const [search, setSearch] = useState('');
-  let viewString;
-  for(let i = 0; i<listVideo1.length; i++){
-    let viewString = listVideo1[i].statistics.viewCount;
-    if(viewString > 1000000){
-      viewString = (listVideo1[i].statistics.viewCount / 1000000).toFixed(1) + 'm'
-    }else if(viewString > 1000){
-      viewString = (listVideo1[i].statistics.viewCount / 1000).toFixed(0) + 'k'
-    }
-  }
+  // let viewString;
+  // for(let i = 0; i<listVideo1.length; i++){
+  //   let viewString = listVideo1[i].statistics.viewCount;
+  //   if(viewString > 1000000){
+  //     viewString = (listVideo1[i].statistics.viewCount / 1000000).toFixed(1) + 'm'
+  //   }else if(viewString > 1000){
+  //     viewString = (listVideo1[i].statistics.viewCount / 1000).toFixed(0) + 'k'
+  //   }
+  // }
   const handleNavigationToWatchVideo = () => {
     navigation.navigate('WatchVideo')
   }
   const handleSearchVideo = () => {
-    dispatch(fetchVideoSearch(search));
+    // dispatch(fetchVideoSearch(search));
   }
   const handleNavigation = () => {
-    navigation.goBack()
+    navigation.popToTop()
   }
-  const handleChangeText = (text) => {
-    setSearch(text);
+  const handleChangeText = () => {
+
   }
   const renderItem = ({item}) => {
     let datePublicVideo =  new Date(item.snippet.publishedAt);
@@ -58,7 +54,7 @@ const Search = ({navigation}) => {
         thumbnail={item.snippet.thumbnails.high.url} 
         title={item.snippet.title}
         channelTitle={item.snippet.channelTitle}
-        view={viewString}
+        // view={viewString}
         time = {timeString}
         />
     )
@@ -70,7 +66,7 @@ const Search = ({navigation}) => {
       onSearch = {handleSearchVideo} 
       onChangeText = {handleChangeText}/>
       <FlatList
-          data={list}
+          data={listVideoSearch}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
