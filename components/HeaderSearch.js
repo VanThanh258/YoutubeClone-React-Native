@@ -4,18 +4,23 @@ import  Constants  from 'expo-constants'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons'; 
-const HeaderSearch = (props) => {
+const HeaderSearch = ({
+    onGoBack,
+    onFocus,
+    value,
+    onChangeText
+}) => {
   return (
     <View style={styles.container} >
-        <TouchableOpacity onPress={props.onGoBack}>
+        <TouchableOpacity onPress={onGoBack}>
             <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <TextInput 
-        onFocus={props.onFocus}
-        value={props.value}
+        onFocus={onFocus}
+        value={value}
         style={styles.search} 
         placeholder='Tìm kiếm trên Youtube' 
-        onChangeText={props.onChangeText} />
+        onChangeText={onChangeText} />
         <TouchableOpacity style={styles.record} >
         <FontAwesome name="microphone" size={22} color="black" />
         </TouchableOpacity>

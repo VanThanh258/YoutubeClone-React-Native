@@ -3,19 +3,24 @@ import React from 'react'
 import  Constants  from 'expo-constants'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-const HeaderSubSearch = (props) => {
+const HeaderSubSearch = ({
+    onGoBack,
+    value,
+    onChangeText,
+    onSearch
+}) => {
   return (
     <View style={styles.container} >
-        <TouchableOpacity onPress={props.onGoBack}>
+        <TouchableOpacity onPress={onGoBack}>
             <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <TextInput 
-        value={props.value}
+        value={value}
         autoFocus={true}
         style={styles.search} 
         placeholder='Tìm kiếm trên Youtube' 
-        onChangeText={props.onChangeText} 
-        onSubmitEditing={props.onSearch}/>
+        onChangeText={onChangeText} 
+        onSubmitEditing={onSearch}/>
         <TouchableOpacity style={styles.record} >
         <FontAwesome name="microphone" size={22} color="black" />
         </TouchableOpacity>

@@ -2,14 +2,18 @@ import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-nativ
 import React from 'react'
 import { Feather } from '@expo/vector-icons'; 
 
-const SubItemSearch = (props) => {
+const SubItemSearch = ({
+  onNavigationSearch,
+  text,
+  onSetText
+}) => {
   return (
-    <Pressable style={styles.container} onPress={props.onNavigationSearch}>
+    <Pressable style={styles.container} onPress={onNavigationSearch}>
       <Feather name="clock" size={24} color="black" />
       <View style={styles.content}>
-      <Text style={styles.text}>{props.text}</Text>
+      <Text style={styles.text}>{text}</Text>
       </View>
-      <TouchableOpacity onPress={props.onSetText}>
+      <TouchableOpacity onPress={onSetText}>
       <Feather name="arrow-up-left" size={24} color="black" />
       </TouchableOpacity>
     </Pressable>

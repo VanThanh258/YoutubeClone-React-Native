@@ -5,9 +5,9 @@ import VideoCardHome from '../components/VideoCardHome'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchVideoSearch } from '../src/store/searchSlice'
-import { fetchVideo } from '../src/store/videoSlice'
 import { useRoute } from '@react-navigation/native'
 import { useEffect } from 'react'
+import { videoSliceAction } from '../src/store/videoSlice'
 const Search = ({navigation}) => {
   const {params} = useRoute()
   const dispatch = useDispatch();
@@ -25,8 +25,10 @@ const Search = ({navigation}) => {
   //     viewString = (listVideo1[i].statistics.viewCount / 1000).toFixed(0) + 'k'
   //   }
   // }
-  const handleNavigationToWatchVideo = () => {
-    navigation.navigate('WatchVideo')
+  const handleNavigationToVideoPlayer = (item) => {
+    const action = videoSliceAction.updateVideoId(item.id.videoId)
+    dispatch(action);
+    navigation.push('VideoPlayer')
   }
   const handleNavigation = () => {
     navigation.popToTop()
@@ -52,7 +54,7 @@ const Search = ({navigation}) => {
     }
     return (
         <VideoCardHome 
-        onNavigation = {handleNavigationToWatchVideo}
+        onNavigation = {() => handleNavigationToVideoPlayer(item)}
         thumbnail={item.snippet.thumbnails.high.url} 
         title={item.snippet.title}
         channelTitle={item.snippet.channelTitle}

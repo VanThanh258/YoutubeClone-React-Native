@@ -4,7 +4,13 @@ const videoSlice = createSlice({
     name: 'video',
     initialState:{
         listVideo: [],
-        status: 'idle'
+        status: 'idle',
+        videoId: '',
+    },
+    reducers:{
+        updateVideoId(state, action){
+            state.videoId = action.payload;
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -21,6 +27,7 @@ const videoSlice = createSlice({
     }
 })
 
+export const videoSliceAction = videoSlice.actions
 
 export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => {
     const video = await videoApi.getVideo();

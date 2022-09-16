@@ -1,15 +1,48 @@
-import { View, Text,StyleSheet,Dimensions,Image, Pressable } from 'react-native'
+import { View, Text, Image, StyleSheet, Touchable, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
-const width = Dimensions.get('window').width;
-const VideoCardSearch = () => {
+import { Entypo } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChannel } from '../src/store/channelSlice';
+const VideoCardSearch = ({
+  channelId,
+  onNavigation,
+  thumbnail,
+  title,
+  channelTitle,
+  view,
+  time
+}) => {
+  useEffect(() => {
+    dispatch(fetchChannel(channelId))
+  },[])
+  const channel = useSelector(state => state.channel);
+  const dispatch = useDispatch();
+  const {listChannel} = channel
+  const channel1 = listChannel.find(item => item.id === channelId)
   return (
-    <Pressable style={styles.container}>
-        <Image style={styles.thumb} source={require('../images/imageCard/Thum.png')} />
-        <View style={styles.content}>
-            <Text style={styles.title} numberOfLines={3}>Compiltation | Everything Belongs to Allah 33 Mins | omar...Compiltation | Everything Belongs to Allah 33 Mins | omar</Text>
-            <Text style={styles.channel}>Omar & Hana - Islamic </Text>
-            <Text style={styles.view}>5.5M views</Text>
-        </View>
+    <Pressable style={{marginTop:5,}} onPress={onNavigation}>
+      {/* Video component */}
+      <View>
+        {/* Thumbnail */}
+          <View>
+            <Image style={styles.thumbnail} source={{uri: thumbnail}}/>
+            {/* <View style={styles.timeContainer}>
+              <Text style={styles.time}>15:23</Text>
+            </View> */}
+          </View>
+        {/* Title row */}
+          <View style={styles.titleRow}>
+            {
+              channel1 ? <Image style={styles.avatar} source={{uri: channel1.snippet.thumbnails.high.url}}/> : <Image style={styles.avatar}/>
+            }
+            <View style={styles.content}>
+              <Text style={styles.titleContent} numberOfLines={2}>{title}</Text>
+              <Text style={styles.subContent}>{channelTitle} - {view} - {time}</Text>
+            </View>
+            <Entypo name="dots-three-vertical" size={15} color="black" />
+          </View>
+      </View>
     </Pressable>
   )
 }
@@ -17,29 +50,45 @@ const VideoCardSearch = () => {
 export default VideoCardSearch
 
 const styles = StyleSheet.create({
-    container:{
-        flexDirection:'row',
-        marginTop: 13,
-        paddingHorizontal: 10,
-        alignItems:'center'
+    thumbnail:{
+      width: '100%',
+      aspectRatio: 16/9,
     },
-    thumb:{
-        width: '45%',
-        height: 90,
+    timeContainer:{
+      width: 50,
+      height: 25,
+      backgroundColor: '#00000099',
+      position:'absolute',
+      right: 5,
+      bottom: 5, 
+      alignItems:'center',
+      justifyContent:'center',
+      borderRadius: 5   
+    },
+    time:{
+      color:'white'
+    },
+    titleRow:{
+      flexDirection: 'row',
+      paddingVertical: 14,
+      paddingHorizontal: 12,
+      backgroundColor:'white'
+    },
+    avatar:{
+      width: 50,
+      height: 50,
+      borderRadius: 50/2
     },
     content:{
-        width: width/2,
-        marginLeft: 10,
+      flex: 1,
+      marginLeft: 12,
     },
-    title:{
-        fontSize: 15,
-        fontWeight: 'bold',
+    titleContent:{
+      fontSize: 14,
+      fontWeight:'bold'
     },
-    channel:{
-        fontSize: 12,
-    },
-    view:{
-        fontSize: 12
+    subContent:{
+      color:'#6C6C6C',
+      fontSize: 12
     }
-
 })

@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
 import { FontAwesome } from '@expo/vector-icons'; 
-const Header = (props) => {
+const Header = ({
+  onNavigation
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
@@ -14,7 +16,7 @@ const Header = (props) => {
         <TouchableOpacity>
         <Image style={styles.image} source={require('../images/imageHeader/Bell.png')}/>
         </TouchableOpacity>
-        <Pressable onPress={props.onNavigation}>
+        <Pressable onPress={onNavigation}>
         <Image style={styles.image} source={require('../images/imageHeader/Search.png')}/>
         </Pressable>
         <TouchableOpacity>

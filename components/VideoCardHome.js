@@ -1,28 +1,46 @@
 import { View, Text, Image, StyleSheet, Touchable, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
 import { Entypo } from '@expo/vector-icons';
-
-const VideoCardHome = (props) => {
-  
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChannel } from '../src/store/channelSlice';
+const VideoCardHome = ({
+  channelId,
+  onNavigation,
+  thumbnail,
+  title,
+  channelTitle,
+  view,
+  time
+}) => {
+  useEffect(() => {
+    dispatch(fetchChannel(channelId))
+  },[])
+  const channel = useSelector(state => state.channel);
+  const dispatch = useDispatch();
+  const {listChannel} = channel
+  const channel1 = listChannel.find(item => item.id === channelId)
   return (
-    <Pressable style={{marginTop:5,}} onPress={props.onNavigation}>
+    <Pressable style={{marginTop:5,}} onPress={onNavigation}>
       {/* Video component */}
       <View>
         {/* Thumbnail */}
           <View>
-            <Image style={styles.thumbnail} source={{uri: props.thumbnail}}/>
+            <Image style={styles.thumbnail} source={{uri: thumbnail}}/>
             {/* <View style={styles.timeContainer}>
               <Text style={styles.time}>15:23</Text>
             </View> */}
           </View>
         {/* Title row */}
           <View style={styles.titleRow}>
-            <Image style={styles.avatar} source={require('../images/imageCard/Thum.png')}/>
+            {
+              channel1 ? <Image style={styles.avatar} source={{uri: channel1.snippet.thumbnails.high.url}}/> : <Image style={styles.avatar}/>
+            }
             <View style={styles.content}>
-              <Text style={styles.titleContent} numberOfLines={2}>{props.title}</Text>
-              <Text style={styles.subContent}>{props.channelTitle} - {props.view} - {props.time}</Text>
+              <Text style={styles.titleContent} numberOfLines={2}>{title}</Text>
+              <Text style={styles.subContent}>{channelTitle} - {view} - {time}</Text>
             </View>
-            <Entypo name="dots-three-vertical" size={20} color="black" />
+            <Entypo name="dots-three-vertical" size={15} color="black" />
           </View>
       </View>
     </Pressable>
@@ -57,9 +75,9 @@ const styles = StyleSheet.create({
       backgroundColor:'white'
     },
     avatar:{
-      width: 36,
-      height: 36,
-      borderRadius: 36/2
+      width: 50,
+      height: 50,
+      borderRadius: 50/2
     },
     content:{
       flex: 1,
@@ -70,6 +88,7 @@ const styles = StyleSheet.create({
       fontWeight:'bold'
     },
     subContent:{
-      color:'#6C6C6C'
+      color:'#6C6C6C',
+      fontSize: 12
     }
 })

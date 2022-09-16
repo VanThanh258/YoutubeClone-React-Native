@@ -8,20 +8,17 @@ import  Constants  from 'expo-constants'
 import videoSlice, { fetchVideo, fetchVideoNation, videoSliceAction } from '../src/store/videoSlice';
 import { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { fetchNation } from '../src/store/nationSlice';
-import { useRef } from 'react';
+import { fetchChannel } from '../src/store/channelSlice';
 const headerHeight = Constants.statusBarHeight + 80
-let index = 0;
 const Home = ({navigation}) => {
   const video = useSelector(state => state.video)
-  const nation = useSelector(state => state.nation)
   const dispatch = useDispatch();
   const {listVideo, status} = video
-  const {listNation} = nation
+  const channel = useSelector(state => state.channel)
+  const {listChannel} = channel
+  console.log(listChannel)
   useEffect( () => {
     dispatch(fetchVideo());
-  },[])
-  useEffect(() => {
-    dispatch(fetchNation());
   },[])
   const renderItem = ({item}) => {
     let datePublicVideo =  new Date(item.snippet.publishedAt);
@@ -47,19 +44,22 @@ const Home = ({navigation}) => {
     }
     return (
         <VideoCardHome 
-        onNavigation = {handleNavigationToWatchVideo}
+        onNavigation = {() => handleNavigationToVideoPlayer(item)}
         thumbnail={item.snippet.thumbnails.high.url} 
         title={item.snippet.title}
         channelTitle={item.snippet.channelTitle}
         view={viewString}
         time = {timeString}
+        channelId = {item.snippet.channelId}
         />
     )
   }
   
   //navigation
-  const handleNavigationToWatchVideo = () => {
-    navigation.push('WatchVideo')
+  const handleNavigationToVideoPlayer = (item) => {
+    const action = videoSliceAction.updateVideoId(item.id)
+    dispatch(action);
+    navigation.push('VideoPlayer')
   }
   const handleNavigation = () => {
     navigation.push('SubSearch')
@@ -73,12 +73,9 @@ const Home = ({navigation}) => {
   })
   const handleScoll = (e)=>{
     scrollY.setValue(e.nativeEvent.contentOffset.y);
-    if(listNation){
-      if(e.nativeEvent.contentOffset.y > listVideo.length * 300){
-        // index = ++index;
-        // dispatch(fetchVideoNation(listNation[index].id))
-      }
-    }
+    console.log(e.nativeEvent.contentOffset.y)
+      // if(e.nativeEvent.contentOffset.y > listVideo.length * 280){
+      // }
   }
   // const scrollY = useSharedValue(0)
   // const rStyle = useAnimatedStyle(() => {
