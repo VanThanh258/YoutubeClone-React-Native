@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChannel } from '../src/store/channelSlice';
-const VideoCardHome = ({
+const VideoCard = ({
   channelId,
   onNavigation,
   thumbnail,
@@ -47,7 +47,7 @@ const VideoCardHome = ({
   )
 }
 
-export default VideoCardHome
+export default VideoCard
 
 const styles = StyleSheet.create({
     thumbnail:{

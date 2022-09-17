@@ -17,7 +17,7 @@ const Navigation = () => {
             <Stack.Screen name = 'VideoPlayer' component={VideoPlayer}/>
             <Stack.Screen name = 'Search' component={Search}/>
         </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer>          
   )
 }
 

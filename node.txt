@@ -1,0 +1,18 @@
+  // const scrollY = useSharedValue(0)
+  // const rStyle = useAnimatedStyle(() => {
+  //   const translateY = interpolate(
+  //     scrollY.value,
+  //     [0,headerHeight],
+  //     [0,-headerHeight]
+  //   )
+  //   return{
+  //      transform: [
+  //        {
+  //       translateY: translationY.value,
+  //      },
+  //      ],
+  //   }
+  // })
+  // const scrollHandler = useAnimatedScrollHandler((event) => {
+  //   scrollY.value = event.contentOffset.y;
+  // });

@@ -1,49 +1,51 @@
 import { View, Text, FlatList, TouchableOpacity, ScrollView, StyleSheet, StatusBar,Animated } from 'react-native'
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState,useRef } from 'react'
 import Header from '../components/Header'
-import VideoCardHome from '../components/VideoCardHome'
+import VideoCard from '../components/VideoCard'
 import { useDispatch,useSelector } from 'react-redux';
 import SubHeader from '../components/SubHeader'
-import  Constants  from 'expo-constants'
-import videoSlice, { fetchVideo, fetchVideoNation, videoSliceAction } from '../src/store/videoSlice';
-import { interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { fetchNation } from '../src/store/nationSlice';
-import { fetchChannel } from '../src/store/channelSlice';
+import Constants  from 'expo-constants'
+import { fetchVideo, videoSliceAction } from '../src/store/videoSlice';
 const headerHeight = Constants.statusBarHeight + 80
 const Home = ({navigation}) => {
   const video = useSelector(state => state.video)
   const dispatch = useDispatch();
   const {listVideo, status} = video
-  const channel = useSelector(state => state.channel)
-  const {listChannel} = channel
-  console.log(listChannel)
   useEffect( () => {
     dispatch(fetchVideo());
   },[])
+  let timeString = useRef('');
+  let viewString = useRef('');
+function showTime(date){
+  let datePublicVideo =  new Date(date);
+  let dateNow = new Date();
+  let time = dateNow - datePublicVideo;
+  if(time > 31104000000){
+    timeString = Math.floor(time/1000/60/60/24/30/12 ) + ' năm trước'
+  }else if(time > 2592000000){
+    timeString = Math.floor(time/1000/60/60/24/30) + ' tháng trước'
+  }else if(time > 86400000){
+    timeString = Math.floor(time/1000/60/60/24) + ' ngày trước'
+  }else if(time > 3600000){
+    timeString = Math.floor(time/1000/60/60) + ' giờ trước'
+  }else if(time > 60000){
+    timeString = ' vài phút trước'
+  }
+  return timeString
+}
+function showView(view){
+  if(view > 1000000){
+    viewString = (view / 1000000).toFixed(1) + 'm' + ' lượt xem'
+  }else if(view > 1000){
+    viewString = (view / 1000).toFixed(0) + 'k' + ' lượt xem'
+  }
+  return viewString
+}
   const renderItem = ({item}) => {
-    let datePublicVideo =  new Date(item.snippet.publishedAt);
-    let dateNow = new Date();
-    let time = dateNow - datePublicVideo;
-    let timeString;
-    if(time > 31104000000){
-      timeString = Math.floor(time/1000/60/60/24/30/12 ) + ' năm trước'
-    }else if(time > 2592000000){
-      timeString = Math.floor(time/1000/60/60/24/30) + ' tháng trước'
-    }else if(time > 86400000){
-      timeString = Math.floor(time/1000/60/60/24) + ' ngày trước'
-    }else if(time > 3600000){
-      timeString = Math.floor(time/1000/60/60) + ' giờ trước'
-    }else if(time > 60000){
-      timeString = ' vài phút trước'
-    }
-    let viewString = item.statistics.viewCount;
-    if(viewString > 1000000){
-      viewString = (item.statistics.viewCount / 1000000).toFixed(1) + 'm' + ' lượt xem'
-    }else if(viewString > 1000){
-      viewString = (item.statistics.viewCount / 1000).toFixed(0) + 'k' + ' lượt xem'
-    }
+    showTime(item.snippet.publishedAt);
+    showView(item.statistics.viewCount);
     return (
-        <VideoCardHome 
+        <VideoCard 
         onNavigation = {() => handleNavigationToVideoPlayer(item)}
         thumbnail={item.snippet.thumbnails.high.url} 
         title={item.snippet.title}
@@ -54,8 +56,6 @@ const Home = ({navigation}) => {
         />
     )
   }
-  
-  //navigation
   const handleNavigationToVideoPlayer = (item) => {
     const action = videoSliceAction.updateVideoId(item.id)
     dispatch(action);
@@ -64,7 +64,6 @@ const Home = ({navigation}) => {
   const handleNavigation = () => {
     navigation.push('SubSearch')
   }
-  //Animation hide Header
   const scrollY = new Animated.Value(0)
   const diffClamp = Animated.diffClamp(scrollY,0,headerHeight)
   const translateY = diffClamp.interpolate({
@@ -73,28 +72,7 @@ const Home = ({navigation}) => {
   })
   const handleScoll = (e)=>{
     scrollY.setValue(e.nativeEvent.contentOffset.y);
-    console.log(e.nativeEvent.contentOffset.y)
-      // if(e.nativeEvent.contentOffset.y > listVideo.length * 280){
-      // }
   }
-  // const scrollY = useSharedValue(0)
-  // const rStyle = useAnimatedStyle(() => {
-  //   const translateY = interpolate(
-  //     scrollY.value,
-  //     [0,headerHeight],
-  //     [0,-headerHeight]
-  //   )
-  //   return{
-  //      transform: [
-  //        {
-  //       translateY: translationY.value,
-  //      },
-  //      ],
-  //   }
-  // })
-  // const scrollHandler = useAnimatedScrollHandler((event) => {
-  //   scrollY.value = event.contentOffset.y;
-  // });
   return (
     <View style={styles.container}>
       <StatusBar/>

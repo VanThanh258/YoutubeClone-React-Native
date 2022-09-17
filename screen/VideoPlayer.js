@@ -10,7 +10,6 @@ const VideoPlayer = ({navigation}) => {
     <View>
       <WatchVideo
        videoId={videoId}
-       
        />
     </View>
   )

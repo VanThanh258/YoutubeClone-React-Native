@@ -17,7 +17,6 @@ const searchSlice = createSlice({
         })
     }
 })
-
 export const fetchVideoSearch = createAsyncThunk('search/fetchVideoSearch', async (keyWord) => {
     const search = await searchApi.getVideoSearch(keyWord);
     return search.items

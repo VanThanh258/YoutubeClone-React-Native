@@ -21,12 +21,8 @@ const videoSlice = createSlice({
             state.listVideo = [...state.listVideo, ...action.payload]
             state.status = 'idle'
         })
-        .addCase(fetchVideoNation.fulfilled, (state, action) => {
-            state.listVideo = [...state.listVideo, ...action.payload]
-        })
     }
 })
-
 export const videoSliceAction = videoSlice.actions
 
 export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => {
@@ -34,9 +30,5 @@ export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => {
     return video.items
 })
 
-export const fetchVideoNation = createAsyncThunk('video/fetchVideoNation', async (id) => {
-    const videoNation = await videoApi.getVideoNation(id);
-    return videoNation.items
-})
 
 export default videoSlice;
