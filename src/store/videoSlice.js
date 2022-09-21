@@ -6,6 +6,7 @@ const videoSlice = createSlice({
         listVideo: [],
         status: 'idle',
         videoId: '',
+        oneVideo:[],
     },
     reducers:{
         updateVideoId(state, action){
@@ -18,8 +19,11 @@ const videoSlice = createSlice({
             state.status = 'loadding'
         })
         .addCase(fetchVideo.fulfilled, (state, action) => {
-            state.listVideo = [...state.listVideo, ...action.payload]
+            state.listVideo = [...state.listVideo, ...action.payload.items]
             state.status = 'idle'
+        })
+        .addCase(fetchOneVideo.fulfilled, (state, action) => {
+            state.oneVideo = [...state.oneVideo, ...action.payload.items]
         })
     }
 })
@@ -27,8 +31,12 @@ export const videoSliceAction = videoSlice.actions
 
 export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => {
     const video = await videoApi.getVideo();
-    return video.items
+    return video
 })
 
+export const fetchOneVideo = createAsyncThunk('video/fetchOneVideo', async (videoId) => {
+    const video = await videoApi.getOneVideo(videoId);
+    return video
+})
 
 export default videoSlice;
