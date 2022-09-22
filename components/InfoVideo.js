@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
 const InfoVideo = ({
@@ -8,7 +8,7 @@ const InfoVideo = ({
   time
 }) => {
   return (
-    <Pressable style={styles.container} onPress={onMoreInfomation}>
+    <TouchableOpacity style={styles.container} onPress={onMoreInfomation}>
       <View style={styles.left}>
         <Text numberOfLines={2} style={styles.title}>{title}</Text>
         <Text style={styles.desc}>{view} - {time}</Text>
@@ -16,7 +16,7 @@ const InfoVideo = ({
       <View>
       <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

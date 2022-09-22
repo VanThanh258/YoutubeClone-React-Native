@@ -17,6 +17,7 @@ import Constants from "expo-constants";
 import { fetchVideo, videoSliceAction } from "../src/store/videoSlice";
 import { channelSliceAction } from "../src/store/channelSlice";
 const headerHeight = Constants.statusBarHeight + 80;
+
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const video = useSelector((state) => state.video);
@@ -34,8 +35,7 @@ const Home = ({ navigation }) => {
     let dateNow = new Date();
     let time = dateNow - datePublicVideo;
     if (time > 31104000000) {
-      timeString =
-        Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + " năm trước";
+      timeString = Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + " năm trước";
     } else if (time > 2592000000) {
       timeString = Math.floor(time / 1000 / 60 / 60 / 24 / 30) + " tháng trước";
     } else if (time > 86400000) {
@@ -50,9 +50,9 @@ const Home = ({ navigation }) => {
 
   const showView = (view) => {
     if (view > 1000000) {
-      viewString = (view / 1000000).toFixed(1) + "m" + " lượt xem";
+      viewString = (view / 1000000).toFixed(1) + "Tr" + " lượt xem";
     } else if (view > 1000) {
-      viewString = (view / 1000).toFixed(0) + "k" + " lượt xem";
+      viewString = (view / 1000).toFixed(0) + "N" + " lượt xem";
     }
     return viewString;
   }
@@ -81,7 +81,7 @@ const Home = ({ navigation }) => {
     navigation.push("VideoPlayer");
   };
 
-  const handleNavigation = () => {
+  const handleNavigationToSubSearch = () => {
     navigation.push("SubSearch");
   };
 
@@ -104,7 +104,7 @@ const Home = ({ navigation }) => {
           { transform: [{ translateY: translateY }] },
         ]}
       >
-        <Header onNavigation={handleNavigation} />
+        <Header onNavigation={handleNavigationToSubSearch} />
         <SubHeader />
       </Animated.View>
       <View>
@@ -117,6 +117,7 @@ const Home = ({ navigation }) => {
           scrollEventThrottle={16}
         />
       </View>
+      {/* <BottomSheetDetail/> */}
     </View>
   );
 };

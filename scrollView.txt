@@ -1,0 +1,28 @@
+{/* <ScrollView>
+        <InfoVideo
+          title={video.snippet.title}
+          view={viewString}
+          time={timeString}
+        />
+        <OptionBar like={likeString} />
+        <Channel
+          avatar={channel.snippet.thumbnails.high.url}
+          title={channel.snippet.localized.title}
+          subscribe={subString}
+        />
+        <Comment commentCount={commentString} />
+        {
+        listRelatedVideo.map((item) => {
+          showTime(item.snippet.publishedAt);
+          return (
+            <VideoCard
+              thumbnail={item.snippet.thumbnails.high.url}
+              title={item.snippet.title}
+              channelTitle={item.snippet.channelTitle}
+              time={timeString}
+              channelId={item.snippet.channelId}
+            />
+          );
+        })
+        }
+      </ScrollView> */}

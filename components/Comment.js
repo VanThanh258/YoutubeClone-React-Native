@@ -2,7 +2,9 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 
 const Comment = ({
-  commentCount
+  commentCount,
+  commentPublic,
+  avatar
 }) => {
   return (
     <View style={styles.container}>
@@ -12,10 +14,10 @@ const Comment = ({
       </View>
       <View style={styles.bot}>
         <View style={{width: '10%'}}>
-        <Image style={styles.avatar}/>
+        <Image style={styles.avatar} source={{uri: avatar}}/>
         </View>
         <View style={{width: '90%'}}>
-            <Text>জাযাকাল্লাহ ভাইয়া আপনার এই মেহনত আল্লাহ কবুল করুক সম্ভব হলে প্রতিদিন ১টা করে porbo দিয়েন</Text>    
+            <Text numberOfLines={1}>{commentPublic}</Text>    
         </View>
       </View>
     </View>

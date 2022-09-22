@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Dimensions,
 } from "react-native";
 import React from "react";
 import YoutubePlayer from "react-native-youtube-iframe";
@@ -14,9 +15,15 @@ import { useRef } from "react";
 import OptionBar from "../components/OptionBar";
 import Channel from "../components/Channel";
 import Comment from "../components/Comment";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchRelatedVideo } from "../src/store/relatedVideoSilce";
 import VideoCard from "../components/VideoCard";
+import BottomSheet from "reanimated-bottom-sheet";
+import BottomSheetDetail from "../components/BottomSheetDetail";
+import { fetchComment } from "../src/store/commentSlice";
+
+const screenHeight = Dimensions.get("window").height;
+const bottomSheetHeight = screenHeight - screenHeight / 3.4;
 const VideoPlayer = ({ navigation }) => {
   const dispatch = useDispatch();
   const video1 = useSelector((state) => state.video);
@@ -25,27 +32,40 @@ const VideoPlayer = ({ navigation }) => {
   const channel1 = useSelector((state) => state.channel);
   const { listChannel, channelId } = channel1;
   const channel = listChannel.find((item) => item.id === channelId);
-  const listRelatedVideo = useSelector(
-    (state) => state.relatedVideo.listRelatedVideo
-  );
+  const listRelatedVideo = useSelector( (state) => state.relatedVideo.listRelatedVideo);
+  const listComment = useSelector ((state) => state.comment.listComment)
+  const viewVideo = video.statistics.viewCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const dateVideo = new Date(video.snippet.publishedAt);
+  const day = dateVideo.getDate();
+  const month = dateVideo.getMonth() + 1;
+  const year = dateVideo.getFullYear()
 
+  const sheetRef = useRef(null);
   let timeString = useRef("");
   let viewString = useRef("");
   let likeString = useRef("");
   let subString = useRef("");
   let commentString = useRef("");
+  let descVideo = useRef("");
 
   useEffect(() => {
     dispatch(fetchRelatedVideo(videoId));
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchComment(videoId));
+  },[]) 
+
+  const renderTextWithBreakLines = (text) => {
+    return text.split(`\n`).map((txt, i) => <Text key={i}>{ txt }{ '\n' }</Text>)
+  }
 
   const showTime = (date) => {
     let datePublicVideo = new Date(date);
     let dateNow = new Date();
     let time = dateNow - datePublicVideo;
     if (time > 31104000000) {
-      timeString =
-        Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + " năm trước";
+      timeString = Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + " năm trước";
     } else if (time > 2592000000) {
       timeString = Math.floor(time / 1000 / 60 / 60 / 24 / 30) + " tháng trước";
     } else if (time > 86400000) {
@@ -100,17 +120,8 @@ const VideoPlayer = ({ navigation }) => {
     return commentString;
   };
 
-  const renderItem = ({ item }) => {
-    showTime(item.snippet.publishedAt);
-    return (
-      <VideoCard
-        thumbnail={item.snippet.thumbnails.high.url}
-        title={item.snippet.title}
-        channelTitle={item.snippet.channelTitle}
-        time={timeString}
-        channelId={item.snippet.channelId}
-      />
-    );
+  const handleSeeMore = () => {
+    sheetRef.current.snapTo(bottomSheetHeight);
   };
 
   viewString = showView(video.statistics.viewCount);
@@ -118,12 +129,30 @@ const VideoPlayer = ({ navigation }) => {
   likeString = showLike(video.statistics.likeCount);
   commentString = showComment(video.statistics.commentCount);
   subString = showSubscribe(channel.statistics.subscriberCount);
+  descVideo = renderTextWithBreakLines(video.snippet.description)
+  
+  const renderContentInfoVideo = () => (
+    <BottomSheetDetail 
+    onShowBottomSheet={() => sheetRef.current.snapTo(0)}
+    title = {video.snippet.title}
+    avatar = {channel.snippet.thumbnails.high.url}
+    nameChannel = {channel.snippet.localized.title}
+    likeVideo = {likeString}
+    view = {viewVideo}
+    desc = {descVideo}
+    day = {day}
+    month = {month}
+    year = {year}
+    />
+  );
 
   return (
     <View>
       <WatchVideo videoId={videoId} />
-      {/* <ScrollView>
+      <View style={{ height: "70%" }}>
+        <ScrollView>
         <InfoVideo
+          onMoreInfomation={handleSeeMore}
           title={video.snippet.title}
           view={viewString}
           time={timeString}
@@ -134,12 +163,17 @@ const VideoPlayer = ({ navigation }) => {
           title={channel.snippet.localized.title}
           subscribe={subString}
         />
-        <Comment commentCount={commentString} />
+        <Comment 
+          commentCount={commentString}
+          avatar = {listComment[0]?.snippet.topLevelComment.snippet.authorProfileImageUrl}
+          commentPublic = {listComment[0]?.snippet.topLevelComment.snippet.textDisplay}
+        />
         {
         listRelatedVideo.map((item) => {
           showTime(item.snippet.publishedAt);
           return (
             <VideoCard
+              key={item.id.videoId}
               thumbnail={item.snippet.thumbnails.high.url}
               title={item.snippet.title}
               channelTitle={item.snippet.channelTitle}
@@ -149,30 +183,13 @@ const VideoPlayer = ({ navigation }) => {
           );
         })
         }
-      </ScrollView> */}
-      <View style={{height: '70%'}}>
-      <FlatList
-      data={listRelatedVideo}
-      keyExtractor={item => item.id.videoId}
-      ListHeaderComponent={() => (
-        <>
-        <InfoVideo
-          title={video.snippet.title}
-          view={viewString}
-          time={timeString}
-        />
-        <OptionBar like={likeString} />
-        <Channel
-          avatar={channel.snippet.thumbnails.high.url}
-          title={channel.snippet.localized.title}
-          subscribe={subString}
-        />
-        <Comment commentCount={commentString} />
-        </>
-      )}
-      renderItem={renderItem}
-      />
+      </ScrollView>
       </View>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[0, bottomSheetHeight]}
+        renderContent={renderContentInfoVideo}
+      />
     </View>
   );
 };
