@@ -16,3 +16,7 @@
   // const scrollHandler = useAnimatedScrollHandler((event) => {
   //   scrollY.value = event.contentOffset.y;
   // });
+
+  Tạo một màn VideoPlayer xem video home
+  Tạo một màn VideoPlayerSearch xem video màn search gửi sang
+  Tạo một màn VideoPlayerRelated xem video related 

@@ -9,6 +9,7 @@ import { useRoute } from "@react-navigation/native";
 import { useEffect } from "react";
 import { videoSliceAction } from "../src/store/videoSlice";
 import { channelSliceAction } from "../src/store/channelSlice";
+import VideoCardSearch from "../components/VideoCardSearch";
 const Search = ({ navigation }) => {
   const dispatch = useDispatch();
   const { params } = useRoute();
@@ -29,11 +30,11 @@ const Search = ({ navigation }) => {
   //   }
   // }
   const handleNavigationToVideoPlayer = (item) => {
-    const action1 = videoSliceAction.updateVideoId(item.id.videoId);
-    dispatch(action1);
-    const action2 = channelSliceAction.updateChannelId(item.snippet.channelId);
-    dispatch(action2);
-    navigation.push("VideoPlayer");
+    // const action1 = videoSliceAction.updateVideoId(item.id.videoId);
+    // dispatch(action1);
+    // const action2 = channelSliceAction.updateChannelId(item.snippet.channelId);
+    // dispatch(action2);
+    navigation.push("VideoPlayerSearch");
   };
   const handleNavigation = () => {
     navigation.popToTop();
@@ -66,7 +67,7 @@ const Search = ({ navigation }) => {
   const renderItem = ({ item }) => {
     showTime(item.snippet.publishedAt);
     return (
-      <VideoCard
+      <VideoCardSearch
         onNavigation={() => handleNavigationToVideoPlayer(item)}
         thumbnail={item.snippet.thumbnails.high.url}
         title={item.snippet.title}

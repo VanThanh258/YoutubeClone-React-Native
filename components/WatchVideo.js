@@ -12,7 +12,7 @@ const WatchVideo = ({
   useEffect(() => {
     setTimeout(() => {
       setIsPlay(true)
-    },200)
+    },1000)
   },[])
 
   if(!isPlay) return null;

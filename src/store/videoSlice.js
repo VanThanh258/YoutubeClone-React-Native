@@ -23,7 +23,14 @@ const videoSlice = createSlice({
             state.status = 'idle'
         })
         .addCase(fetchOneVideo.fulfilled, (state, action) => {
-            state.oneVideo = [...state.oneVideo, ...action.payload.items]
+            const video = state.listVideo.find(item => item.id === action.payload.items.id)
+            if(video){
+                state.listVideo = state.listVideo
+            }
+            else{
+                state.listVideo = [...state.listVideo, ...action.payload.items]
+            }
+            //state.oneVideo = [...state.oneVideo, ...action.payload.items]
         })
     }
 })

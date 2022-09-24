@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-const key = "AIzaSyBExIRi0i7yTE9MkhJYyGVDdKx_3qv0oDk"
+const key = "AIzaSyCQryOlAYFiQsFN3jxMqFxDJQVYMSzM9zU"
 const nationApi = {
     getNation(){
         const url = `/i18nRegions?part=snippet&hl=en_US&key=${key}`;

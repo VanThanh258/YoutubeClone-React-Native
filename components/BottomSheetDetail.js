@@ -5,103 +5,146 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useImperativeHandle } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { forwardRef } from "react";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 const screenHeight = Dimensions.get("window").height;
-const bottomSheetHeight = screenHeight - screenHeight / 3.4;
-const BottomSheetDetail = ({ 
-  onShowBottomSheet,
-  title,
-  avatar,
-  nameChannel,
-  likeVideo,
-  view,
-  day,
-  month,
-  year,
-  desc
-}) => {
-  
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={{fontSize: 15, fontWeight:'bold'}}>Nội dung mô tả</Text>
-        <TouchableOpacity onPress={onShowBottomSheet}>
-          <AntDesign name="close" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <ScrollView style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <View style={styles.channel}>
-          <Image style={styles.avatar} source={{uri: avatar}}/>
-          <Text>{nameChannel}</Text>
+//const MAX_TRANSLATE_Y = -screenHeight + 30;
+const BottomSheetDetail = forwardRef(
+  (
+    { title, avatar, nameChannel, likeVideo, view, day, month, year, desc },
+    ref
+  ) => {
+    const translateY = useSharedValue(0);
+
+    const scrollTo = (destination) => {
+      "worklet";
+      translateY.value = withTiming(destination);
+    };
+
+    useImperativeHandle(ref, () => ({ scrollTo }), [scrollTo]);
+
+    // const context = useSharedValue({ y: 0 });
+    // const gesture = Gesture.Pan()
+    //   .onStart(() => {
+    //     context.value = { y: translateY.value };
+    //   })
+    //   .onUpdate((event) => {
+    //     translateY.value = event.translationY + context.value.y;
+    //     translateY.value = Math.max(translateY.value, MAX_TRANSLATE_Y);
+    //   })
+    //   .onEnd(() => {
+    //     if (translateY.value > -screenHeight / 3) {
+    //       scrollTo(0);
+    //     } else if (translateY.value < -screenHeight / 1.5) {
+    //       scrollTo(MAX_TRANSLATE_Y);
+    //     }
+    //   });
+
+    const rBottomSheetStyle = useAnimatedStyle(() => {
+      return {
+        transform: [{ translateY: translateY.value }],
+      };
+    });
+
+    const handleClose = () => {
+      ref?.current?.scrollTo(0);
+    };
+
+    return (
+       //<GestureDetector gesture={gesture}>
+      <Animated.View style={[styles.bottomSheetContainer, rBottomSheetStyle]}>
+        <View style={styles.header}>
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+            Nội dung mô tả
+          </Text>
+          <TouchableOpacity onPress={handleClose}>
+            <AntDesign name="close" size={24} color="black" />
+          </TouchableOpacity>
         </View>
-        <View style={styles.infoVideo}>
-          <View style={{alignItems:'center'}}> 
-            <Text style={{fontWeight:'bold'}}>{likeVideo}</Text>
-            <Text>Lượt thích</Text>
-          </View> 
-          <View style={{alignItems:'center'}}>
-            <Text style={{fontWeight:'bold'}}>{view}</Text>
-            <Text>Lượt xem</Text>
+        <ScrollView style={styles.content}>
+          <Text style={styles.title}>{title}</Text>
+          <View style={styles.channel}>
+            <Image style={styles.avatar} source={{ uri: avatar }} />
+            <Text>{nameChannel}</Text>
           </View>
-          <View style={{alignItems:'center'}}>
-            <Text style={{fontWeight:'bold'}}>{day} tháng {month}</Text>
-            <Text>{year}</Text>
+          <View style={styles.infoVideo}>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ fontWeight: "bold" }}>{likeVideo}</Text>
+              <Text>Lượt thích</Text>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ fontWeight: "bold" }}>{view}</Text>
+              <Text>Lượt xem</Text>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ fontWeight: "bold" }}>
+                {day} tháng {month}
+              </Text>
+              <Text>{year}</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.desc}>
-          <Text>{desc}</Text>
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
+          <View style={styles.desc}>
+            <Text>{desc}</Text>
+          </View>
+        </ScrollView>
+      </Animated.View>
+      //  </GestureDetector>
+    );
+  }
+);
 
 export default BottomSheetDetail;
 
 const styles = StyleSheet.create({
-  container: {
+  bottomSheetContainer: {
     backgroundColor: "white",
-    height: bottomSheetHeight,
+    height: screenHeight,
+    width: "100%",
+    backgroundColor: "white",
+    position: "absolute",
+    top: screenHeight,
   },
-  header:{
-    flexDirection:'row',
+  header: {
+    flexDirection: "row",
     borderBottomWidth: 0.5,
-    borderBottomColor:'gray',
-    justifyContent:'space-between',
-    padding: 12
+    borderBottomColor: "gray",
+    justifyContent: "space-between",
+    padding: 12,
   },
-  content:{
-    
-  },
-  title:{
+  content: {},
+  title: {
     padding: 12,
     fontSize: 15,
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
-  channel:{
+  channel: {
     paddingHorizontal: 12,
-    flexDirection:'row',
-    alignItems:'center'
+    flexDirection: "row",
+    alignItems: "center",
   },
-  avatar:{
+  avatar: {
     width: 36,
     height: 36,
-    borderRadius: 36/2,
-    marginRight: 10
+    borderRadius: 36 / 2,
+    marginRight: 10,
   },
-  infoVideo:{
+  infoVideo: {
     padding: 12,
-    flexDirection:'row',
-    justifyContent:'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     borderBottomWidth: 0.5,
-    borderBottomColor:'gray'
+    borderBottomColor: "gray",
   },
-  desc:{
-    padding: 12
-  }
+  desc: {
+    padding: 12,
+  },
 });

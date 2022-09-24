@@ -1,9 +1,6 @@
 import {
   View,
-  Text,
   FlatList,
-  TouchableOpacity,
-  ScrollView,
   StyleSheet,
   StatusBar,
   Animated,
@@ -117,7 +114,6 @@ const Home = ({ navigation }) => {
           scrollEventThrottle={16}
         />
       </View>
-      {/* <BottomSheetDetail/> */}
     </View>
   );
 };

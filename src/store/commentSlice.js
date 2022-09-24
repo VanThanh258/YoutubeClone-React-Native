@@ -9,7 +9,7 @@ const commentSlice = createSlice({
     extraReducers:(builder) => {
         builder
         .addCase(fetchComment.fulfilled, (state, action) => {
-            state.listComment = [...state.listComment, ...action.payload.items]
+            state.listComment =  action.payload.items
         })
     }
 })

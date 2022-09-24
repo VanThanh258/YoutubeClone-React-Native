@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
-const key = "AIzaSyBExIRi0i7yTE9MkhJYyGVDdKx_3qv0oDk"
+const key = "AIzaSyCQryOlAYFiQsFN3jxMqFxDJQVYMSzM9zU"
 const relatedVideoApi = {
     getRelatedVideo(videoId){
-        const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&relatedToVideoId=${videoId}&type=video&key=${key}`;
+        const url = `/search?part=snippet&maxResults=5&relatedToVideoId=${videoId}&type=video&key=${key}`;
         return axiosClient.get(url);
     },
 }

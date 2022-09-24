@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 const Comment = ({
   commentCount,
   commentPublic,
-  avatar
+  avatar,
+  onMoreComment
 }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onMoreComment}>
       <View style={styles.top}>
         <Text>Comment {commentCount}</Text>
         <Image source={require('../images/imageCard/IconComment.png')}/>
@@ -20,7 +21,7 @@ const Comment = ({
             <Text numberOfLines={1}>{commentPublic}</Text>    
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
