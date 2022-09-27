@@ -1,8 +1,14 @@
 import { View, Text, Image, StyleSheet,Dimensions, ScrollView,TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
+
 const screenWidth = Dimensions.get('window').width;
-const SubHeader = () => {
+const SubHeader = ({
+  listVideoCategories,
+  onFilterVideo,
+  onShowAllVideo
+}) => {
+  const [backgroundColor, setBackgroundColor] = useState('#ECECEC')
   return (
     <ScrollView 
     horizontal
@@ -16,30 +22,25 @@ const SubHeader = () => {
           </View>
         </View>
         <View style={styles.right}>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Tất cả</Text>
+          <TouchableOpacity 
+          style={styles.contentRight}
+          onPress = {onShowAllVideo}
+          >
+            <Text>Most Popular</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Trò chơi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Âm nhạc</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Trực tiếp</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Danh sách kết hợp</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Chương trình nấu ăn</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Thể dục</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.contentRight}>
-            <Text>Bóng đá</Text>
-          </TouchableOpacity>
+          {
+            listVideoCategories.map((item) => {
+              return (
+                <TouchableOpacity
+                key={item.id}
+                style={styles.contentRight}
+                onPress={() => onFilterVideo(item.id)}
+                >
+                  <Text>{item.snippet.title}</Text>
+                </TouchableOpacity>
+              )
+            })
+          }
         </View>
     </View>
     </ScrollView>

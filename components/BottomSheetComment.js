@@ -22,7 +22,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 const screenHeight = Dimensions.get("window").height;
-//const bottomSheetHeight = screenHeight - screenHeight / 3.4;
 
 const BottomSheetComment = forwardRef((props, ref) => {
   const listComment = useSelector((state) => state.comment.listComment);

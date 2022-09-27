@@ -11,64 +11,46 @@ import VideoCard from "../components/VideoCard";
 import { useDispatch, useSelector } from "react-redux";
 import SubHeader from "../components/SubHeader";
 import Constants from "expo-constants";
-import { fetchVideo, videoSliceAction } from "../src/store/videoSlice";
+import { fetchVideo, fetchVideoByTopic, videoSliceAction } from "../src/store/videoSlice";
 import { channelSliceAction } from "../src/store/channelSlice";
+import { fetchVideoCategories } from "../src/store/videoCategoriesSlice";
+
 const headerHeight = Constants.statusBarHeight + 80;
 
 const Home = ({ navigation }) => {
+  const [show, setShow] = useState(true)
   const dispatch = useDispatch();
-  const video = useSelector((state) => state.video);
-  const { listVideo, status } = video;
-
+  const listVideo = useSelector((state) => state.video.listVideo);
+  const listVideoCategories = useSelector(state => state.videoCategories.listVideoCategories)
+  const listVideoByTopic = useSelector(state => state.video.listVideoByTopic)
+  
   useEffect(() => {
     dispatch(fetchVideo());
   }, []);
 
-  let timeString = useRef("");
-  let viewString = useRef("");
+  useEffect(() => {
+    dispatch(fetchVideoCategories());
+  },[])
 
-  const showTime = (date) => {
-    let datePublicVideo = new Date(date);
-    let dateNow = new Date();
-    let time = dateNow - datePublicVideo;
-    if (time > 31104000000) {
-      timeString = Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + " năm trước";
-    } else if (time > 2592000000) {
-      timeString = Math.floor(time / 1000 / 60 / 60 / 24 / 30) + " tháng trước";
-    } else if (time > 86400000) {
-      timeString = Math.floor(time / 1000 / 60 / 60 / 24) + " ngày trước";
-    } else if (time > 3600000) {
-      timeString = Math.floor(time / 1000 / 60 / 60) + " giờ trước";
-    } else if (time > 60000) {
-      timeString = " vài phút trước";
-    }
-    return timeString;
-  }
-
-  const showView = (view) => {
-    if (view > 1000000) {
-      viewString = (view / 1000000).toFixed(1) + "Tr" + " lượt xem";
-    } else if (view > 1000) {
-      viewString = (view / 1000).toFixed(0) + "N" + " lượt xem";
-    }
-    return viewString;
-  }
-
-  const renderItem = ({ item }) => {
-    showTime(item.snippet.publishedAt);
-    showView(item.statistics.viewCount);
+  const renderItemListVideo = ({ item }) => {
     return (
       <VideoCard
         onNavigation={() => handleNavigationToVideoPlayer(item)}
-        thumbnail={item.snippet.thumbnails.high.url}
-        title={item.snippet.title}
-        channelTitle={item.snippet.channelTitle}
-        view={viewString}
-        time={timeString}
         channelId={item.snippet.channelId}
+        videoId = {item.id}
       />
     );
   };
+
+  const renderItemTopicVideo = ({item}) => {
+    return (
+      <VideoCard
+        onNavigation={() => handleNavigationToVideoPlayer(item)}
+        channelId={item.snippet.channelId}
+        videoId = {item.id.videoId}
+      />
+    );
+  }
 
   const handleNavigationToVideoPlayer = (item) => {
     const action1 = videoSliceAction.updateVideoId(item.id);
@@ -81,6 +63,15 @@ const Home = ({ navigation }) => {
   const handleNavigationToSubSearch = () => {
     navigation.push("SubSearch");
   };
+ 
+  const handleFilterVideo = (item) => {
+    setShow(false)
+    dispatch(fetchVideoByTopic(item))
+  }
+
+  const handleShowAllVideo = () => {
+    setShow(true);
+  }
 
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, headerHeight);
@@ -88,6 +79,7 @@ const Home = ({ navigation }) => {
     inputRange: [0, headerHeight],
     outputRange: [0, -headerHeight],
   });
+
   const handleScoll = (e) => {
     scrollY.setValue(e.nativeEvent.contentOffset.y);
   };
@@ -102,17 +94,33 @@ const Home = ({ navigation }) => {
         ]}
       >
         <Header onNavigation={handleNavigationToSubSearch} />
-        <SubHeader />
+        <SubHeader 
+        listVideoCategories={listVideoCategories}
+        onFilterVideo = {handleFilterVideo}
+        onShowAllVideo = {handleShowAllVideo}
+        />
       </Animated.View>
       <View>
-        <FlatList
+        {
+          show === true
+          ? <FlatList
           style={{ paddingTop: headerHeight }}
           data={listVideo}
-          renderItem={renderItem}
+          renderItem={renderItemListVideo}
           keyExtractor={(item) => item.id}
           onScroll={handleScoll}
           scrollEventThrottle={16}
         />
+          :<FlatList
+          style={{ paddingTop: headerHeight }}
+          data={listVideoByTopic}
+          renderItem={renderItemTopicVideo}
+          keyExtractor={(item) => item.id.videoId}
+          onScroll={handleScoll}
+          scrollEventThrottle={16}
+          />
+        }
+        
       </View>
     </View>
   );

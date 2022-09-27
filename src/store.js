@@ -5,6 +5,7 @@ import nationSlice from './store/nationSlice';
 import recommendSlice from './store/recommendSlice';
 import relatedVideoSlice from './store/relatedVideoSilce';
 import searchSlice from './store/searchSlice';
+import videoCategoriesSlice from './store/videoCategoriesSlice';
 import videoSlice from './store/videoSlice';
 const store = configureStore({
     reducer:{
@@ -15,6 +16,7 @@ const store = configureStore({
         recommend: recommendSlice.reducer,
         relatedVideo: relatedVideoSlice.reducer,
         comment: commentSlice.reducer,
+        videoCategories: videoCategoriesSlice.reducer
     }
 })
 

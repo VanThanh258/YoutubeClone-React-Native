@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-const key = "AIzaSyCQryOlAYFiQsFN3jxMqFxDJQVYMSzM9zU"
+const key = "AIzaSyAjJPWqSvuu7F-sDjy8kxjdWnvL2KXTGUo"
 const searchApi = {
     getVideoSearch(keyWord){
         const url = `/search?part=snippet&maxResults=25&q=${keyWord}&type=video&key=${key}`;
