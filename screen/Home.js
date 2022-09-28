@@ -5,7 +5,7 @@ import {
   StatusBar,
   Animated,
 } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import VideoCard from "../components/VideoCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ const headerHeight = Constants.statusBarHeight + 80;
 const Home = ({ navigation }) => {
   const [show, setShow] = useState(true)
   const dispatch = useDispatch();
-  const listVideo = useSelector((state) => state.video.listVideo);
+  const listVideoMostPopular = useSelector((state) => state.video.listVideoMostPopular);
   const listVideoCategories = useSelector(state => state.videoCategories.listVideoCategories)
   const listVideoByTopic = useSelector(state => state.video.listVideoByTopic)
   
@@ -35,7 +35,7 @@ const Home = ({ navigation }) => {
   const renderItemListVideo = ({ item }) => {
     return (
       <VideoCard
-        onNavigation={() => handleNavigationToVideoPlayer(item)}
+        onNavigation={handleNavigationToVideoPlayer}
         channelId={item.snippet.channelId}
         videoId = {item.id}
       />
@@ -45,7 +45,7 @@ const Home = ({ navigation }) => {
   const renderItemTopicVideo = ({item}) => {
     return (
       <VideoCard
-        onNavigation={() => handleNavigationToVideoPlayer(item)}
+        onNavigation={handleNavigationToVideoPlayer}
         channelId={item.snippet.channelId}
         videoId = {item.id.videoId}
       />
@@ -53,10 +53,10 @@ const Home = ({ navigation }) => {
   }
 
   const handleNavigationToVideoPlayer = (item) => {
-    const action1 = videoSliceAction.updateVideoId(item.id);
-    dispatch(action1);
-    const action2 = channelSliceAction.updateChannelId(item.snippet.channelId);
-    dispatch(action2);
+    const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
+    dispatch(actionUpdateVideoId);
+    const actionUpdateChannelId = channelSliceAction.updateChannelId(item.snippet.channelId);
+    dispatch(actionUpdateChannelId)
     navigation.push("VideoPlayer");
   };
 
@@ -105,7 +105,7 @@ const Home = ({ navigation }) => {
           show === true
           ? <FlatList
           style={{ paddingTop: headerHeight }}
-          data={listVideo}
+          data={listVideoMostPopular}
           renderItem={renderItemListVideo}
           keyExtractor={(item) => item.id}
           onScroll={handleScoll}

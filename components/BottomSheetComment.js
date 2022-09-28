@@ -13,7 +13,6 @@ import { AntDesign } from "@expo/vector-icons";
 import UserComment from "./UserComment";
 import { FontAwesome } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import { useRef } from "react";
 import { forwardRef } from "react";
 import Animated, {
   useAnimatedStyle,
@@ -26,10 +25,8 @@ const screenHeight = Dimensions.get("window").height;
 const BottomSheetComment = forwardRef((props, ref) => {
   const listComment = useSelector((state) => state.comment.listComment);
 
-  let timeString = useRef("");
-  let likeCount = useRef("");
-
   const showTime = (date) => {
+    let timeString
     let datePublicVideo = new Date(date);
     let dateNow = new Date();
     let time = dateNow - datePublicVideo;
@@ -49,6 +46,7 @@ const BottomSheetComment = forwardRef((props, ref) => {
   };
 
   const showLike = (like) => {
+    let likeCount
     if (like == 0) {
       likeCount = "";
     } else {
@@ -77,8 +75,8 @@ const BottomSheetComment = forwardRef((props, ref) => {
   };
 
   const renderItem = ({ item }) => {
-    timeString = showTime(item.snippet.topLevelComment.snippet.publishedAt);
-    likeCount = showLike(item.snippet.topLevelComment.snippet.likeCount);
+    let timeString = showTime(item.snippet.topLevelComment.snippet.publishedAt);
+    let likeCount = showLike(item.snippet.topLevelComment.snippet.likeCount);
     return (
       <UserComment
         avatar={item.snippet.topLevelComment.snippet.authorProfileImageUrl}
@@ -92,7 +90,6 @@ const BottomSheetComment = forwardRef((props, ref) => {
 
   return (
     <Animated.View style={[styles.container, rBottomSheetStyle]}>
-    {/* <View style={styles.container}> */}
       <View style={styles.header}>
         <Text style={{ fontSize: 15, fontWeight: "bold" }}>Bình luận</Text>
         <TouchableOpacity onPress={handleClose}>
@@ -109,9 +106,8 @@ const BottomSheetComment = forwardRef((props, ref) => {
       <FlatList
         data={listComment}
         renderItem={renderItem}
-        keyExtractor={(item) => item.snippet.id}
+        keyExtractor={(item) => item.id}
       />
-    {/* </View> */}
     </Animated.View>
   );
 });
@@ -121,7 +117,7 @@ export default BottomSheetComment;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    height: screenHeight,
+    height: "72%",
     width: "100%",
     backgroundColor: "white",
     position: "absolute",

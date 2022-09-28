@@ -11,9 +11,9 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
   const dispatch = useDispatch();
   const listChannel = useSelector((state) => state.channel.listChannel);
   const channel = listChannel.find((item) => item.id === channelId);
-  const listVideo = useSelector((state) => state.video.oneVideo);
+  const listVideo = useSelector((state) => state.video.listVideo);
   const video = listVideo.find((item) => item.id === videoId);
-
+  
   useEffect(() => {
     dispatch(fetchChannel(channelId));
   }, []);
@@ -25,8 +25,10 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
   const timeVideo = useRef("");
 
   const YTDurationToSeconds = (duration) => {
+    if(duration === 'P0D'){
+      duration = 'PT0S'
+    }
     let match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
-
     match = match.slice(1).map(function (x) {
       if (x != null) {
         return x.replace(/\D/, "");
@@ -68,7 +70,7 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
       }
     }else {
       seconds = Math.floor(time % 3600 % 60)
-      timeVideo = `${seconds}`;
+      timeVideo = `0:${seconds}`;
     }
     return timeVideo;
   }
@@ -112,7 +114,7 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
   
 
   return (
-    <Pressable style={{ marginTop: 5, flex: 1 }} onPress={onNavigation}>
+    <Pressable style={{ marginTop: 5, flex: 1 }} onPress={() => onNavigation(video)}>
       {/* Video component */}
       <View>
         {/* Thumbnail */}
@@ -122,7 +124,9 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
             source={{ uri: video?.snippet.thumbnails.high.url }}
           />
           <View style={styles.timeContainer}>
-            <Text style={styles.time}>{timeVideo.current}</Text>
+            <Text style={styles.time}>
+              {timeVideo.current}
+              </Text>
           </View>
         </View>
         {/* Title row */}

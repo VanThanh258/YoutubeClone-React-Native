@@ -14,14 +14,19 @@ const channelSlice = createSlice({
     extraReducers:(builder) => {
         builder
         .addCase(fetchChannel.fulfilled, (state, action) => {
-            state.listChannel = [...state.listChannel, ...action.payload]
+            const channel = state.listChannel.find(item => item.id === action.payload.items[0].id)
+            if(channel){
+                state.listChannel = [...state.listChannel]
+            }else{
+                state.listChannel = [...state.listChannel, ...action.payload.items]
+            }
         })
     }
 })
 export const channelSliceAction = channelSlice.actions;
 export const fetchChannel = createAsyncThunk('channel/fetchChannel', async (id) => {
     const channel = await channelApi.getChannel(id)
-    return channel.items
+    return channel
 })
 
 export default channelSlice;

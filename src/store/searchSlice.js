@@ -4,7 +4,15 @@ const searchSlice = createSlice({
     name: 'search',
     initialState:{
         listVideoSearch: [],
-        status: 'idle'
+        status: 'idle',
+        keyWord: '',
+        searchChannel: [],
+        searchPlaylist:[],
+    },
+    reducers:{
+        updateKeyWord(state, action){
+            state.keyWord = action.payload
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -12,15 +20,25 @@ const searchSlice = createSlice({
             state.status = 'loadding'
         })
         .addCase(fetchVideoSearch.fulfilled, (state, action) => {
-            state.listVideoSearch = action.payload;
-            state.status = 'idle'
+            const list = action.payload.items;
+            for(let i=0; i<list.length;i++){
+                if(list[i].id.kind === "youtube#video" ){
+                    state.listVideoSearch.push(list[i])
+                }else if(list[i].id.kind === "youtube#channel"){
+                    state.searchChannel.push(list[i]);
+                }else if(list[i].id.kind === "youtube#playlist"){
+                    state.searchPlaylist.push(list[i]);
+                }
+            }
         })
     }
 })
 
+export const searchSliceAction = searchSlice.actions;
+
 export const fetchVideoSearch = createAsyncThunk('search/fetchVideoSearch', async (keyWord) => {
     const search = await searchApi.getVideoSearch(keyWord);
-    return search.items
+    return search
 })
 
 export default searchSlice;

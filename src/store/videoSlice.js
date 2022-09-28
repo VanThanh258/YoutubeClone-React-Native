@@ -1,13 +1,12 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import { acc } from "react-native-reanimated";
 import videoApi from "../api/videoApi";
 const videoSlice = createSlice({
     name: 'video',
     initialState:{
-        listVideo: [],
+        listVideoMostPopular: [],
         status: 'idle',
         videoId: '',
-        oneVideo:[],
+        listVideo:[],
         listVideoByTopic:[],
     },
     reducers:{
@@ -21,11 +20,16 @@ const videoSlice = createSlice({
             state.status = 'loadding'
         })
         .addCase(fetchVideo.fulfilled, (state, action) => {
-            state.listVideo = [...state.listVideo,...action.payload.items]
+            state.listVideoMostPopular = action.payload.items
             state.status = 'idle'
         })
         .addCase(fetchOneVideo.fulfilled, (state, action) => {
-            state.oneVideo = [...state.oneVideo, ...action.payload.items];
+            const video = state.listVideo.find(item => item.id === action.payload.items[0].id)
+            if(video){
+                state.listVideo = [...state.listVideo]
+            }else {
+                state.listVideo = [...state.listVideo, ...action.payload.items];
+            }
         })
         .addCase(fetchVideoByTopic.fulfilled, (state, action) => {
             state.listVideoByTopic = action.payload.items

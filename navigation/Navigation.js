@@ -6,7 +6,6 @@ import BottomTabNavigator from './BottomTabNavigator'
 import SubSearch from '../screen/SubSearch'
 import VideoPlayer from '../screen/VideoPlayer'
 import Search from '../screen/Search'
-import VideoPlayerSearch from '../screen/VideoPlayerSearch'
 const Stack = createNativeStackNavigator()
 
 const Navigation = () => {
@@ -17,7 +16,6 @@ const Navigation = () => {
             <Stack.Screen name ='BottomTab' component={BottomTabNavigator}/>
             <Stack.Screen name = 'VideoPlayer' component={VideoPlayer}/>
             <Stack.Screen name = 'Search' component={Search}/>
-            <Stack.Screen name = 'VideoPlayerSearch' component={VideoPlayerSearch}/>
         </Stack.Navigator>
     </NavigationContainer>          
   )

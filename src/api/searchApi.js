@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 const key = "AIzaSyAjJPWqSvuu7F-sDjy8kxjdWnvL2KXTGUo"
 const searchApi = {
     getVideoSearch(keyWord){
-        const url = `/search?part=snippet&maxResults=25&q=${keyWord}&type=video&key=${key}`;
+        const url = `/search?part=snippet&maxResults=25&q=${keyWord}&key=${key}`;
         return axiosClient.get(url);
     },
     getRelatedVideo(videoId){

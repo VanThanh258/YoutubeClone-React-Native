@@ -1,9 +1,9 @@
 import { View, Text, Dimensions, StyleSheet } from 'react-native'
 import React from 'react'
 import YoutubePlayer from 'react-native-youtube-iframe'
-import { useEffect,useState } from 'react';
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+import { useEffect,useState } from 'react'
+const screenWidth = Dimensions.get('window').width
+const screenHeight = Dimensions.get('window').height
 const WatchVideo = ({
   videoId
 }) => {

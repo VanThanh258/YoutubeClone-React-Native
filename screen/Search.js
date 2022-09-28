@@ -2,28 +2,28 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import React from "react";
 import HeaderSearch from "../components/HeaderSearch";
 import VideoCard from "../components/VideoCard";
-import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchVideoSearch } from "../src/store/searchSlice";
-import { useRoute } from "@react-navigation/native";
+import { videoSliceAction } from "../src/store/videoSlice";
+import { channelSliceAction } from "../src/store/channelSlice";
 import { useEffect } from "react";
 
 const Search = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { params } = useRoute();
-  const videoSearch = useSelector((state) => state.search);
-  const { listVideoSearch } = videoSearch;
+  const keyWord = useSelector(state => state.search.keyWord);
+  const listVideoSearch = useSelector((state) => state.search.listVideoSearch);
+  const listVideo = useSelector(state => state.video.listVideo)
 
   useEffect(() => {
-    dispatch(fetchVideoSearch(params.search));
+    dispatch(fetchVideoSearch(keyWord));
   }, []);
 
   const handleNavigationToVideoPlayer = (item) => {
-    // const action1 = videoSliceAction.updateVideoId(item.id.videoId);
-    // dispatch(action1);
-    // const action2 = channelSliceAction.updateChannelId(item.snippet.channelId);
-    // dispatch(action2);
-    navigation.push("VideoPlayerSearch");
+    const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
+    dispatch(actionUpdateVideoId);
+    const actionUpdateChannelId = channelSliceAction.updateChannelId(item.snippet.channelId);
+    dispatch(actionUpdateChannelId)
+    navigation.push("VideoPlayer");
   };
   const handleNavigation = () => {
     navigation.popToTop();
@@ -35,7 +35,7 @@ const Search = ({ navigation }) => {
   const renderItem = ({ item }) => {
     return (
       <VideoCard
-        onNavigation={() => handleNavigationToVideoPlayer(item)}
+        onNavigation={handleNavigationToVideoPlayer}
         channelId={item.snippet.channelId}
         videoId={item.id.videoId}
       />
@@ -46,14 +46,14 @@ const Search = ({ navigation }) => {
     <View>
       <HeaderSearch
         onGoBack={handleNavigation}
-        value={params.search}
+        value={keyWord}
         onFocus={handleFocus}
       />
       <View style={{ marginBottom: 100 }}>
         <FlatList
           data={listVideoSearch}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.videoId}
         />
       </View>
     </View>

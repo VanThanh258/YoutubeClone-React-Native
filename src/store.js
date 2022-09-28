@@ -17,7 +17,11 @@ const store = configureStore({
         relatedVideo: relatedVideoSlice.reducer,
         comment: commentSlice.reducer,
         videoCategories: videoCategoriesSlice.reducer
-    }
+    },
+    // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    //     immutableCheck: false,
+    //     serializableCheck: false,
+    //   })
 })
 
 export default store;

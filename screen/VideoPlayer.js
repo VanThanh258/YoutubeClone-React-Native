@@ -14,6 +14,8 @@ import Channel from "../components/Channel";
 import Comment from "../components/Comment";
 import { useEffect } from "react";
 import { fetchRelatedVideo } from "../src/store/relatedVideoSilce";
+import { videoSliceAction } from "../src/store/videoSlice";
+import { channelSliceAction } from "../src/store/channelSlice";
 import VideoCard from "../components/VideoCard";
 import BottomSheetDetail from "../components/BottomSheetDetail";
 import { fetchComment } from "../src/store/commentSlice";
@@ -24,40 +26,34 @@ const bottomSheetHeight = screenHeight -screenHeight / 3.5;
 
 const VideoPlayer = ({ navigation }) => {
   const dispatch = useDispatch();
-  const video1 = useSelector((state) => state.video);
-  const { videoId, listVideo } = video1;
-  const video = listVideo.find((item) => item.id === videoId);
-  const channel1 = useSelector((state) => state.channel);
-  const { listChannel, channelId } = channel1;
-  const channel = listChannel.find((item) => item.id === channelId);
+  const videoId = useSelector(state => state.video.videoId)
+  const listVideo = useSelector(state => state.video.listVideo);
+  const channelId = useSelector(state => state.channel.channelId);
+  const listChannel = useSelector(state => state.channel.listChannel);
   const listRelatedVideo = useSelector(
     (state) => state.relatedVideo.listRelatedVideo
   );
   const listComment = useSelector((state) => state.comment.listComment);
-  const viewVideo = video?.statistics.viewCount
+  const video = listVideo.find((item) => item.id === videoId);
+  const channel = listChannel.find((item) => item.id === channelId);
+  const viewVideo = video.statistics.viewCount
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  const dateVideo = new Date(video?.snippet.publishedAt);
+  const dateVideo = new Date(video.snippet.publishedAt);
   const day = dateVideo.getDate();
   const month = dateVideo.getMonth() + 1;
   const year = dateVideo.getFullYear();
 
   const refInfo = useRef(null);
   const refComment = useRef(null)
-  let timeString = useRef("");
-  let viewString = useRef("");
-  let likeString = useRef("");
-  let subString = useRef("");
-  let commentString = useRef("");
-  let descVideo = useRef("");
 
   useEffect(() => {
     dispatch(fetchRelatedVideo(videoId));
-  }, []);
+  },[videoId]);
 
   useEffect(() => {
     dispatch(fetchComment(videoId));
-  }, []);
+  },[videoId]);
 
   const renderTextWithBreakLines = (text) => {
     return text?.split(`\n`).map((txt, i) => (
@@ -69,6 +65,7 @@ const VideoPlayer = ({ navigation }) => {
   };
 
   const showTime = (date) => {
+    let timeString
     let datePublicVideo = new Date(date);
     let dateNow = new Date();
     let time = dateNow - datePublicVideo;
@@ -88,6 +85,7 @@ const VideoPlayer = ({ navigation }) => {
   };
 
   const showView = (view) => {
+    let viewString
     if (view > 1000000) {
       viewString = (view / 1000000).toFixed(1) + " Tr" + " lượt xem";
     } else if (view > 1000) {
@@ -97,6 +95,7 @@ const VideoPlayer = ({ navigation }) => {
   };
 
   const showLike = (like) => {
+    let likeString
     if (like > 1000000) {
       likeString = (like / 1000000).toFixed(0) + " Tr";
     } else if (like > 10000) {
@@ -108,6 +107,7 @@ const VideoPlayer = ({ navigation }) => {
   };
 
   const showSubscribe = (sub) => {
+    let subString
     if (sub > 10000000) {
       subString = (sub / 1000000).toFixed(1) + " Tr subscribe";
     } else if (sub > 1000000) {
@@ -119,6 +119,7 @@ const VideoPlayer = ({ navigation }) => {
   };
 
   const showComment = (comment) => {
+    let commentString
     if (comment > 1000000) {
       commentString = (comment / 1000000).toFixed(1) + " Tr";
     } else if (comment > 1000) {
@@ -128,13 +129,13 @@ const VideoPlayer = ({ navigation }) => {
     }
     return commentString;
   };
-
-  viewString = showView(video?.statistics.viewCount);
-  timeString = showTime(video?.snippet.publishedAt);
-  likeString = showLike(video?.statistics.likeCount);
-  commentString = showComment(video?.statistics.commentCount);
-  subString = showSubscribe(channel.statistics.subscriberCount);
-  descVideo = renderTextWithBreakLines(video?.snippet.description);
+    
+  let viewString = showView(video.statistics.viewCount);
+  let timeString = showTime(video.snippet.publishedAt);
+  let likeString = showLike(video.statistics.likeCount);
+  let commentString = showComment(video.statistics.commentCount);
+  let subString = showSubscribe(channel.statistics.subscriberCount);
+  let descVideo = renderTextWithBreakLines(video.snippet.description);
 
   const handleSeeMoreInfo = () => {
     refInfo?.current?.scrollTo(-bottomSheetHeight)
@@ -145,17 +146,20 @@ const VideoPlayer = ({ navigation }) => {
   }
   
   const handleNavigation = (item) => {
-    
+    const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
+    dispatch(actionUpdateVideoId);
+    const actionUpdateChannelId = channelSliceAction.updateChannelId(item.snippet.channelId);
+    dispatch(actionUpdateChannelId)
   };
 
   return (
     <View>
       <WatchVideo videoId={videoId} />
-      <View style={{ height: "70%" }}>
+      <View style={{ height: "72%" }}>
         <ScrollView>
           <InfoVideo
             onMoreInfomation={handleSeeMoreInfo}
-            title={video?.snippet.title}
+            title={video.snippet.title}
             view={viewString}
             time={timeString}
           />
@@ -176,17 +180,13 @@ const VideoPlayer = ({ navigation }) => {
             }
             onMoreComment = {handleSeeComment}
           />
-          {listRelatedVideo.map((item) => {
-            showTime(item.snippet.publishedAt);
+          {listRelatedVideo && listRelatedVideo.map((item) => {
             return (
               <VideoCard
-                onNavigation={() => handleNavigation(item)}
+                onNavigation={handleNavigation}
                 key={item.id.videoId}
-                thumbnail={item.snippet.thumbnails.high.url}
-                title={item.snippet.title}
-                channelTitle={item.snippet.channelTitle}
-                time={timeString}
                 channelId={item.snippet.channelId}
+                videoId={item.id.videoId}
               />
             );
           })}

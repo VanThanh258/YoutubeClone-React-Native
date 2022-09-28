@@ -15,9 +15,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 const screenHeight = Dimensions.get("window").height;
-//const MAX_TRANSLATE_Y = -screenHeight + 30;
+const MAX_TRANSLATE_Y = -screenHeight + 30;
 const BottomSheetDetail = forwardRef(
   (
     { title, avatar, nameChannel, likeVideo, view, day, month, year, desc },
@@ -32,22 +33,22 @@ const BottomSheetDetail = forwardRef(
 
     useImperativeHandle(ref, () => ({ scrollTo }), [scrollTo]);
 
-    // const context = useSharedValue({ y: 0 });
-    // const gesture = Gesture.Pan()
-    //   .onStart(() => {
-    //     context.value = { y: translateY.value };
-    //   })
-    //   .onUpdate((event) => {
-    //     translateY.value = event.translationY + context.value.y;
-    //     translateY.value = Math.max(translateY.value, MAX_TRANSLATE_Y);
-    //   })
-    //   .onEnd(() => {
-    //     if (translateY.value > -screenHeight / 3) {
-    //       scrollTo(0);
-    //     } else if (translateY.value < -screenHeight / 1.5) {
-    //       scrollTo(MAX_TRANSLATE_Y);
-    //     }
-    //   });
+    const context = useSharedValue({ y: 0 });
+    const gesture = Gesture.Pan()
+      .onStart(() => {
+        context.value = { y: translateY.value };
+      })
+      .onUpdate((event) => {
+        translateY.value = event.translationY + context.value.y;
+        translateY.value = Math.max(translateY.value, MAX_TRANSLATE_Y);
+      })
+      .onEnd(() => {
+        if (translateY.value > -screenHeight / 3) {
+          scrollTo(0);
+        } else if (translateY.value < -screenHeight / 1.5) {
+          scrollTo(MAX_TRANSLATE_Y);
+        }
+      });
 
     const rBottomSheetStyle = useAnimatedStyle(() => {
       return {
@@ -60,7 +61,7 @@ const BottomSheetDetail = forwardRef(
     };
 
     return (
-       //<GestureDetector gesture={gesture}>
+       <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.bottomSheetContainer, rBottomSheetStyle]}>
         <View style={styles.header}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>
@@ -97,7 +98,7 @@ const BottomSheetDetail = forwardRef(
           </View>
         </ScrollView>
       </Animated.View>
-      //  </GestureDetector>
+      </GestureDetector>
     );
   }
 );

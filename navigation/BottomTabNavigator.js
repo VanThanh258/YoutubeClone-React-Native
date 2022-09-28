@@ -1,7 +1,6 @@
-import { View, Text,Image } from 'react-native'
+import { Image } from 'react-native'
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
-import { NavigationContainer } from '@react-navigation/native'
 import Home from '../screen/Home'
 import Shorts from '../screen/Shorts'
 import Subcription from '../screen/Subcription'

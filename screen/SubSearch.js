@@ -10,12 +10,12 @@ import {
   fetchRecommend,
   recommendSliceAction,
 } from "../src/store/recommendSlice";
+import { searchSliceAction } from "../src/store/searchSlice";
 
 const SubSearch = ({ navigation }) => {
   const dispatch = useDispatch();
   const [text, setText] = useState("");
-  const recommend = useSelector((state) => state.recommend);
-  const { listWord } = recommend;
+  const listWord = useSelector((state) => state.recommend.listWord);
 
   useEffect(() => {
     dispatch(fetchRecommend("like"));
@@ -27,7 +27,9 @@ const SubSearch = ({ navigation }) => {
 
   const handleNavigationSearch = (item) => {
     setText(item);
-    navigation.push("Search", { search: item });
+    const action = searchSliceAction.updateKeyWord(item);
+    dispatch(action);
+    navigation.push("Search");
   };
 
   const handleGoBack = () => {
@@ -42,7 +44,9 @@ const SubSearch = ({ navigation }) => {
   };
 
   const handleSearchVideo = () => {
-    navigation.push("Search", { search: text });
+    const action = searchSliceAction.updateKeyWord(text);
+    dispatch(action);
+    navigation.push("Search");
   };
 
   return (
