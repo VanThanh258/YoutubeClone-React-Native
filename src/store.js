@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import channelSlice from './store/channelSlice';
 import commentSlice from './store/commentSlice';
 import nationSlice from './store/nationSlice';
+import playlistSlice from './store/playlistSlice';
 import recommendSlice from './store/recommendSlice';
 import relatedVideoSlice from './store/relatedVideoSilce';
 import searchSlice from './store/searchSlice';
@@ -16,7 +17,8 @@ const store = configureStore({
         recommend: recommendSlice.reducer,
         relatedVideo: relatedVideoSlice.reducer,
         comment: commentSlice.reducer,
-        videoCategories: videoCategoriesSlice.reducer
+        videoCategories: videoCategoriesSlice.reducer,
+        playlist: playlistSlice.reducer
     },
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     //     immutableCheck: false,

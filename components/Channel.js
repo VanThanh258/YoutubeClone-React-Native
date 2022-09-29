@@ -8,13 +8,13 @@ const Channel = ({
 }) => {
   return (
     <View style={styles.container}>
-      <View style={{flexDirection:'row'}}>
+      <View style={{flexDirection:'row', width:'70%', alignItems:'center'}}>
         <Image style={styles.img} source={{uri: avatar}}/>       
       <View style={{marginLeft: 10}}>
         <Text style={styles.nameChannel}>{title}</Text>
         <Text style={styles.subcribe}>{subscribe}</Text>
       </View>
-        </View>
+      </View>
       <View>
         <Text style={styles.sub}>SUBCRIBE</Text>
       </View>

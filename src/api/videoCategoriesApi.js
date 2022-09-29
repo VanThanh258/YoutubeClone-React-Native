@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-const key = "AIzaSyAjJPWqSvuu7F-sDjy8kxjdWnvL2KXTGUo"
+const key = "AIzaSyCQryOlAYFiQsFN3jxMqFxDJQVYMSzM9zU"
 
 const videoCategoriesApi = {
     getVideoCategories(){

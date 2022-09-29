@@ -19,17 +19,17 @@ const headerHeight = Constants.statusBarHeight + 80;
 
 const Home = ({ navigation }) => {
   const [show, setShow] = useState(true)
-  const dispatch = useDispatch();
-  const listVideoMostPopular = useSelector((state) => state.video.listVideoMostPopular);
+  const dispatch = useDispatch()
+  const listVideoMostPopular = useSelector((state) => state.video.listVideoMostPopular)
   const listVideoCategories = useSelector(state => state.videoCategories.listVideoCategories)
   const listVideoByTopic = useSelector(state => state.video.listVideoByTopic)
   
   useEffect(() => {
-    dispatch(fetchVideo());
-  }, []);
+    dispatch(fetchVideo())
+  },[])
 
   useEffect(() => {
-    dispatch(fetchVideoCategories());
+    dispatch(fetchVideoCategories())
   },[])
 
   const renderItemListVideo = ({ item }) => {
@@ -39,8 +39,8 @@ const Home = ({ navigation }) => {
         channelId={item.snippet.channelId}
         videoId = {item.id}
       />
-    );
-  };
+    )
+  }
 
   const renderItemTopicVideo = ({item}) => {
     return (
@@ -49,20 +49,20 @@ const Home = ({ navigation }) => {
         channelId={item.snippet.channelId}
         videoId = {item.id.videoId}
       />
-    );
+    )
   }
 
   const handleNavigationToVideoPlayer = (item) => {
-    const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
-    dispatch(actionUpdateVideoId);
-    const actionUpdateChannelId = channelSliceAction.updateChannelId(item.snippet.channelId);
+    const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id)
+    dispatch(actionUpdateVideoId)
+    const actionUpdateChannelId = channelSliceAction.updateChannelId(item.snippet.channelId)
     dispatch(actionUpdateChannelId)
-    navigation.push("VideoPlayer");
-  };
+    navigation.push("VideoPlayer")
+  }
 
   const handleNavigationToSubSearch = () => {
-    navigation.push("SubSearch");
-  };
+    navigation.push("SubSearch")
+  }
  
   const handleFilterVideo = (item) => {
     setShow(false)
@@ -70,11 +70,11 @@ const Home = ({ navigation }) => {
   }
 
   const handleShowAllVideo = () => {
-    setShow(true);
+    setShow(true)
   }
 
-  const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, headerHeight);
+  const scrollY = new Animated.Value(0)
+  const diffClamp = Animated.diffClamp(scrollY, 0, headerHeight)
   const translateY = diffClamp.interpolate({
     inputRange: [0, headerHeight],
     outputRange: [0, -headerHeight],

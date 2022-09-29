@@ -98,7 +98,7 @@ const BottomSheetDetail = forwardRef(
           </View>
         </ScrollView>
       </Animated.View>
-      </GestureDetector>
+     </GestureDetector>
     );
   }
 );

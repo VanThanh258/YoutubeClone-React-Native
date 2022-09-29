@@ -27,6 +27,10 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
   const YTDurationToSeconds = (duration) => {
     if(duration === 'P0D'){
       duration = 'PT0S'
+    }else if(duration === 'P2DT8H46M15S'){
+      duration = 'PT2D8H46M15S'
+    }else if(duration === 'P1DT5H37M5S'){
+      duration = 'PT1D5H37M5S'
     }
     let match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
     match = match.slice(1).map(function (x) {
@@ -34,7 +38,7 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
         return x.replace(/\D/, "");
       }
     });
-
+    
     let hours = parseInt(match[0]) || 0;
     let minutes = parseInt(match[1]) || 0;
     let seconds = parseInt(match[2]) || 0;

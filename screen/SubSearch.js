@@ -18,10 +18,6 @@ const SubSearch = ({ navigation }) => {
   const listWord = useSelector((state) => state.recommend.listWord);
 
   useEffect(() => {
-    dispatch(fetchRecommend("like"));
-  }, []);
-
-  useEffect(() => {
     dispatch(fetchRecommend(text));
   }, [text]);
 
@@ -39,6 +35,7 @@ const SubSearch = ({ navigation }) => {
   const handleChangeText = (text) => {
     setText(text);
   };
+
   const handleSetText = (item) => {
     setText(item);
   };

@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
-const key = "AIzaSyAjJPWqSvuu7F-sDjy8kxjdWnvL2KXTGUo"
+const key = "AIzaSyCQryOlAYFiQsFN3jxMqFxDJQVYMSzM9zU"
 const videoApi = {
     getVideo(){
-        const url = `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=30&regionCode=VN&key=${key}`;
+        const url = `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=VN&key=${key}`;
         return axiosClient.get(url);
     },
     getOneVideo(videoId){

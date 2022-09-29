@@ -7,12 +7,21 @@ import { fetchVideoSearch } from "../src/store/searchSlice";
 import { videoSliceAction } from "../src/store/videoSlice";
 import { channelSliceAction } from "../src/store/channelSlice";
 import { useEffect } from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import ChannelCard from "../components/ChannelCard";
+import PlaylistCard from "../components/PlaylistCard";
+import { useState } from "react";
 
 const Search = ({ navigation }) => {
   const dispatch = useDispatch();
-  const keyWord = useSelector(state => state.search.keyWord);
+  const keyWord = useSelector((state) => state.search.keyWord);
   const listVideoSearch = useSelector((state) => state.search.listVideoSearch);
-  const listVideo = useSelector(state => state.video.listVideo)
+  const listSearchChannel = useSelector(
+    (state) => state.search.listSearchChannel
+  );
+  const listSearchPlaylist = useSelector(
+    (state) => state.search.listSearchPlaylist
+  );
 
   useEffect(() => {
     dispatch(fetchVideoSearch(keyWord));
@@ -21,26 +30,30 @@ const Search = ({ navigation }) => {
   const handleNavigationToVideoPlayer = (item) => {
     const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
     dispatch(actionUpdateVideoId);
-    const actionUpdateChannelId = channelSliceAction.updateChannelId(item.snippet.channelId);
-    dispatch(actionUpdateChannelId)
+    const actionUpdateChannelId = channelSliceAction.updateChannelId(
+      item.snippet.channelId
+    );
+    dispatch(actionUpdateChannelId);
     navigation.push("VideoPlayer");
   };
+
   const handleNavigation = () => {
     navigation.popToTop();
   };
+
   const handleFocus = () => {
     navigation.pop(1);
   };
 
-  const renderItem = ({ item }) => {
-    return (
-      <VideoCard
-        onNavigation={handleNavigationToVideoPlayer}
-        channelId={item.snippet.channelId}
-        videoId={item.id.videoId}
-      />
-    );
-  };
+  // const renderItem = ({ item }) => {
+  //   return (
+  //     <VideoCard
+  //       onNavigation={handleNavigationToVideoPlayer}
+  //       channelId={item.snippet.channelId}
+  //       videoId={item.id.videoId}
+  //     />
+  //   );
+  // };
 
   return (
     <View>
@@ -50,11 +63,45 @@ const Search = ({ navigation }) => {
         onFocus={handleFocus}
       />
       <View style={{ marginBottom: 100 }}>
-        <FlatList
+        <ScrollView>
+          { listSearchChannel.map((item) => {
+              return (
+                <ChannelCard 
+                key={item.id.channelId}
+                channelId = {item.id.channelId}
+                />
+              )
+            })
+          }
+          {
+            listSearchPlaylist.map((item) => {
+              return (
+                <PlaylistCard 
+                key={item.id.playlistId}
+                thumbnails={item.snippet.thumbnails.high.url}
+                channelTitle={item.snippet.channelTitle}
+                title={item.snippet.title}
+                playlistId = {item.id.playlistId}
+                />
+              )
+            })
+          }
+          {listVideoSearch.map((item) => {
+            return (
+              <VideoCard
+                key={item.id.videoId}
+                onNavigation={handleNavigationToVideoPlayer}
+                channelId={item.snippet.channelId}
+                videoId={item.id.videoId}
+              />
+            );
+          })}
+        </ScrollView>
+        {/* <FlatList
           data={listVideoSearch}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.videoId}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -64,7 +111,6 @@ export default Search;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingBottom: 10,
   },
 });
