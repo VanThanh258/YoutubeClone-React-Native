@@ -8,7 +8,6 @@ export default function App() {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{flex: 1}}>
-
       <Navigation/>
       </GestureHandlerRootView>
     </Provider>

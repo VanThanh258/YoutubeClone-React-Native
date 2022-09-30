@@ -1,17 +1,17 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import Header from '../components/Header'
+import { View, Text } from 'react-native';
+import React from 'react';
+import Header from '../components/Header';
 
-const Subcription = ({navigation}) => {
-  const handleNavigation = () => {
-    navigation.navigate('Search')
-  }
-  return (
-    <View>
-        <Header onNavigation={handleNavigation}/>
-      <Text>Subcription</Text>
-    </View>
-  )
-}
+const Subcription = ({ navigation }) => {
+    const handleNavigation = () => {
+        navigation.navigate('Search');
+    };
+    return (
+        <View>
+            <Header onNavigation={handleNavigation} />
+            <Text>Subcription</Text>
+        </View>
+    );
+};
 
-export default Subcription
+export default Subcription;

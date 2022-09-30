@@ -1,11 +1,11 @@
-import axiosClient from "./axiosClient";
-const key = "AIzaSyCQryOlAYFiQsFN3jxMqFxDJQVYMSzM9zU"
+import axiosClient from './axiosClient';
+const key = 'AIzaSyBExIRi0i7yTE9MkhJYyGVDdKx_3qv0oDk';
 
 const videoCategoriesApi = {
-    getVideoCategories(){
+    getVideoCategories() {
         const url = `/videoCategories?part=snippet&regionCode=VN&key=${key}`;
-        return axiosClient.get(url)
-    }
-}
+        return axiosClient.get(url);
+    },
+};
 
 export default videoCategoriesApi;
