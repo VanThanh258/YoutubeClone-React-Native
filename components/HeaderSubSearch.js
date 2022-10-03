@@ -1,6 +1,5 @@
 import {
     View,
-    Text,
     StyleSheet,
     TouchableOpacity,
     TextInput,
@@ -9,6 +8,7 @@ import React from 'react';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+
 const HeaderSubSearch = ({ onGoBack, value, onChangeText, onSearch }) => {
     return (
         <View style={styles.container}>

@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchChannel } from '../src/store/channelSlice';
-import { fetchOneVideo } from '../src/store/videoSlice';
+import { fetchVideo } from '../src/store/videoSlice';
 import { useRef } from 'react';
 
 const VideoCard = ({ channelId, onNavigation, videoId }) => {
@@ -19,7 +19,7 @@ const VideoCard = ({ channelId, onNavigation, videoId }) => {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchOneVideo(videoId));
+        dispatch(fetchVideo(videoId));
     }, []);
 
     const timeVideo = useRef('');

@@ -27,6 +27,7 @@ const BottomSheetDetail = forwardRef(
         ref,
     ) => {
         const translateY = useSharedValue(0);
+        const context = useSharedValue({ y: 0 });
 
         const scrollTo = (destination) => {
             'worklet';
@@ -35,7 +36,6 @@ const BottomSheetDetail = forwardRef(
 
         useImperativeHandle(ref, () => ({ scrollTo }), [scrollTo]);
 
-        const context = useSharedValue({ y: 0 });
         const gesture = Gesture.Pan()
             .onStart(() => {
                 context.value = { y: translateY.value };
@@ -64,6 +64,7 @@ const BottomSheetDetail = forwardRef(
 
         const rBottomSheetStyle = useAnimatedStyle(() => {
             return {
+                height: -translateY.value,
                 transform: [{ translateY: translateY.value }],
             };
         });
@@ -124,7 +125,7 @@ export default BottomSheetDetail;
 const styles = StyleSheet.create({
     bottomSheetContainer: {
         backgroundColor: 'white',
-        height: screenHeight,
+        //height: screenHeight,
         width: '100%',
         backgroundColor: 'white',
         position: 'absolute',

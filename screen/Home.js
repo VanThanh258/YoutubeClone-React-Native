@@ -6,12 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import SubHeader from '../components/SubHeader';
 import Constants from 'expo-constants';
 import {
-    fetchVideo,
+    fetchListVideoPopular,
     fetchVideoByTopic,
     videoSliceAction,
 } from '../src/store/videoSlice';
 import { channelSliceAction } from '../src/store/channelSlice';
 import { fetchVideoCategories } from '../src/store/videoCategoriesSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRef } from 'react';
+import { videoIdHistorySliceAction } from '../src/store/videoIdHistorySlice';
 
 const headerHeight = Constants.statusBarHeight + 80;
 
@@ -27,13 +30,26 @@ const Home = ({ navigation }) => {
     const listVideoByTopic = useSelector(
         (state) => state.video.listVideoByTopic,
     );
+    const listVideoIdHistory = useSelector(
+        (state) => state.videoIdHistory.listVideoIdHistory,
+    );
 
     useEffect(() => {
-        dispatch(fetchVideo());
+        dispatch(fetchListVideoPopular());
     }, []);
 
     useEffect(() => {
         dispatch(fetchVideoCategories());
+    }, []);
+
+    useEffect(() => {
+        AsyncStorage.getItem('videoIdHistory').then((value) => {
+            if (value) {
+                const list = JSON.parse(value);
+                const action = videoIdHistorySliceAction.saveListIdVideo(list);
+                dispatch(action);
+            }
+        });
     }, []);
 
     const renderItemListVideo = ({ item }) => {
@@ -56,18 +72,36 @@ const Home = ({ navigation }) => {
         );
     };
 
-    const handleNavigationToVideoPlayer = (item) => {
-        const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
-        dispatch(actionUpdateVideoId);
-        const actionUpdateChannelId = channelSliceAction.updateChannelId(
-            item.snippet.channelId,
-        );
-        dispatch(actionUpdateChannelId);
-        navigation.push('VideoPlayer');
+    const handleNavigationToVideoPlayer = async (item) => {
+        let updateListVideoId = [];
+        const videoId = listVideoIdHistory.find((item1) => item1 === item.id);
+        if (videoId) {
+            updateListVideoId = listVideoIdHistory;
+        } else {
+            updateListVideoId = [...listVideoIdHistory, item.id];
+        }
+        try {
+            await AsyncStorage.setItem(
+                'videoIdHistory',
+                JSON.stringify(updateListVideoId),
+            );
+            const action =
+                videoIdHistorySliceAction.saveListIdVideo(updateListVideoId);
+            dispatch(action);
+            const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
+            dispatch(actionUpdateVideoId);
+            const actionUpdateChannelId = channelSliceAction.updateChannelId(
+                item.snippet.channelId,
+            );
+            dispatch(actionUpdateChannelId);
+            navigation.navigate('VideoPlayer');
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const handleNavigationToSubSearch = () => {
-        navigation.push('SubSearch');
+        navigation.navigate('SubSearch');
     };
 
     const handleFilterVideo = (item) => {

@@ -2,11 +2,11 @@ import {
     View,
     Text,
     StyleSheet,
-    Pressable,
     TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
+
 const InfoVideo = ({ onMoreInfomation, title, view, time }) => {
     return (
         <TouchableOpacity style={styles.container} onPress={onMoreInfomation}>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import React from 'react';
 import {
     MaterialIcons,
@@ -6,13 +6,24 @@ import {
     Ionicons,
     AntDesign,
 } from '@expo/vector-icons';
+import { useState } from 'react';
+
 const OptionBar = ({ like }) => {
+    const [likeVideo, setLikeVideo] = useState(false);
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.allIcon}>
-                <AntDesign name="like2" size={24} color="black" />
+            <Pressable
+                style={styles.allIcon}
+                onPress={() => setLikeVideo(!likeVideo)}
+            >
+                {likeVideo === false ? (
+                    <AntDesign name="like2" size={24} color="black" />
+                ) : (
+                    <AntDesign name="like1" size={24} color="black" />
+                )}
                 <Text>{like}</Text>
-            </TouchableOpacity>
+            </Pressable>
             <TouchableOpacity style={styles.allIcon}>
                 <AntDesign name="dislike2" size={24} color="black" />
                 <Text>Không thích</Text>

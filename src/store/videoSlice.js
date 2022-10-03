@@ -16,14 +16,14 @@ const videoSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchVideo.pending, (state, action) => {
+            .addCase(fetchListVideoPopular.pending, (state, action) => {
                 state.status = 'loadding';
             })
-            .addCase(fetchVideo.fulfilled, (state, action) => {
+            .addCase(fetchListVideoPopular.fulfilled, (state, action) => {
                 state.listVideoMostPopular = action.payload.items;
                 state.status = 'idle';
             })
-            .addCase(fetchOneVideo.fulfilled, (state, action) => {
+            .addCase(fetchVideo.fulfilled, (state, action) => {
                 const video = state.listVideo.find(
                     (item) => item.id === action.payload.items[0].id,
                 );
@@ -44,15 +44,18 @@ const videoSlice = createSlice({
 
 export const videoSliceAction = videoSlice.actions;
 
-export const fetchVideo = createAsyncThunk('video/fetchVideo', async () => {
-    const video = await videoApi.getVideo();
-    return video;
-});
+export const fetchListVideoPopular = createAsyncThunk(
+    'video/fetchListVideoPopular',
+    async () => {
+        const video = await videoApi.getVideoMostPopular();
+        return video;
+    },
+);
 
-export const fetchOneVideo = createAsyncThunk(
-    'video/fetchOneVideo',
+export const fetchVideo = createAsyncThunk(
+    'video/fetchVideo',
     async (videoId) => {
-        const video = await videoApi.getOneVideo(videoId);
+        const video = await videoApi.getVideo(videoId);
         return video;
     },
 );

@@ -1,14 +1,12 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import SubItemSearch from '../components/SubItemSearch';
 import HeaderSubSearch from '../components/HeaderSubSearch';
 import { useEffect } from 'react';
-import recommendApi from '../src/api/recommendApi';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchRecommend,
-    recommendSliceAction,
 } from '../src/store/recommendSlice';
 import { searchSliceAction } from '../src/store/searchSlice';
 
@@ -25,7 +23,7 @@ const SubSearch = ({ navigation }) => {
         setText(item);
         const action = searchSliceAction.updateKeyWord(item);
         dispatch(action);
-        navigation.push('Search');
+        navigation.navigate('Search');
     };
 
     const handleGoBack = () => {
@@ -43,7 +41,7 @@ const SubSearch = ({ navigation }) => {
     const handleSearchVideo = () => {
         const action = searchSliceAction.updateKeyWord(text);
         dispatch(action);
-        navigation.push('Search');
+        navigation.navigate('Search');
     };
 
     return (

@@ -1,6 +1,5 @@
 import {
     View,
-    Text,
     StyleSheet,
     Image,
     TouchableOpacity,
@@ -8,6 +7,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+
 const Header = ({ onNavigation }) => {
     return (
         <View style={styles.container}>

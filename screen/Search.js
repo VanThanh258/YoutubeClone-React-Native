@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import HeaderSearch from '../components/HeaderSearch';
 import VideoCard from '../components/VideoCard';
@@ -10,7 +10,8 @@ import { useEffect } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import ChannelCard from '../components/ChannelCard';
 import PlaylistCard from '../components/PlaylistCard';
-import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { videoIdHistorySliceAction } from '../src/store/videoIdHistorySlice';
 
 const Search = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -24,19 +25,40 @@ const Search = ({ navigation }) => {
     const listSearchPlaylist = useSelector(
         (state) => state.search.listSearchPlaylist,
     );
+    const listVideoIdHistory = useSelector(
+        (state) => state.videoIdHistory.listVideoIdHistory,
+    );
 
     useEffect(() => {
         dispatch(fetchVideoSearch(keyWord));
     }, []);
 
-    const handleNavigationToVideoPlayer = (item) => {
-        const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
-        dispatch(actionUpdateVideoId);
-        const actionUpdateChannelId = channelSliceAction.updateChannelId(
-            item.snippet.channelId,
-        );
-        dispatch(actionUpdateChannelId);
-        navigation.push('VideoPlayer');
+    const handleNavigationToVideoPlayer = async (item) => {
+        let updateListVideoId = [];
+        const videoId = listVideoIdHistory.find((item1) => item1 === item.id);
+        if (videoId) {
+            updateListVideoId = listVideoIdHistory;
+        } else {
+            updateListVideoId = [...listVideoIdHistory, item.id];
+        }
+        try {
+            await AsyncStorage.setItem(
+                'videoIdHistory',
+                JSON.stringify(updateListVideoId),
+            );
+            const action =
+                videoIdHistorySliceAction.saveListIdVideo(updateListVideoId);
+            dispatch(action);
+            const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
+            dispatch(actionUpdateVideoId);
+            const actionUpdateChannelId = channelSliceAction.updateChannelId(
+                item.snippet.channelId,
+            );
+            dispatch(actionUpdateChannelId);
+            navigation.navigate('VideoPlayer');
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const handleNavigation = () => {
@@ -46,16 +68,6 @@ const Search = ({ navigation }) => {
     const handleFocus = () => {
         navigation.pop(1);
     };
-
-    // const renderItem = ({ item }) => {
-    //   return (
-    //     <VideoCard
-    //       onNavigation={handleNavigationToVideoPlayer}
-    //       channelId={item.snippet.channelId}
-    //       videoId={item.id.videoId}
-    //     />
-    //   );
-    // };
 
     return (
         <View>
@@ -96,11 +108,6 @@ const Search = ({ navigation }) => {
                         );
                     })}
                 </ScrollView>
-                {/* <FlatList
-          data={listVideoSearch}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.videoId}
-        /> */}
             </View>
         </View>
     );

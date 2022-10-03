@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Dimensions } from 'react-native';
+import { View, Text, ScrollView, Dimensions, BackHandler } from 'react-native';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import WatchVideo from '../components/WatchVideo';
@@ -126,19 +126,33 @@ const VideoPlayer = ({ navigation }) => {
         return commentString;
     };
 
-    let viewString = showView(video.statistics.viewCount);
-    let timeString = showTime(video.snippet.publishedAt);
-    let likeString = showLike(video.statistics.likeCount);
-    let commentString = showComment(video.statistics.commentCount);
-    let subString = showSubscribe(channel.statistics.subscriberCount);
-    let descVideo = renderTextWithBreakLines(video.snippet.description);
+    const viewString = showView(video.statistics.viewCount);
+    const timeString = showTime(video.snippet.publishedAt);
+    const likeString = showLike(video.statistics.likeCount);
+    const commentString = showComment(video.statistics.commentCount);
+    const subString = showSubscribe(channel.statistics.subscriberCount);
+    const descVideo = renderTextWithBreakLines(video.snippet.description);
+
+    const backActionInfo = () => {
+        refInfo?.current?.scrollTo(0);
+        BackHandler.removeEventListener('hardwareBackPress', backActionInfo);
+        return true;
+    };
+
+    const backActionComment = () => {
+        refComment?.current?.scrollTo(0);
+        BackHandler.removeEventListener('hardwareBackPress', backActionComment);
+        return true;
+    };
 
     const handleSeeMoreInfo = () => {
         refInfo?.current?.scrollTo(-bottomSheetHeight);
+        BackHandler.addEventListener('hardwareBackPress', backActionInfo);
     };
 
     const handleSeeComment = () => {
         refComment?.current?.scrollTo(-bottomSheetHeight);
+        BackHandler.addEventListener('hardwareBackPress', backActionComment);
     };
 
     const handleNavigation = (item) => {

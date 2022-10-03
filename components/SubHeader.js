@@ -8,13 +8,16 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import { useState } from 'react';
 
 const screenWidth = Dimensions.get('window').width;
-const SubHeader = ({ listVideoCategories, onFilterVideo, onShowAllVideo }) => {
-    const [backgroundColor, setBackgroundColor] = useState('#ECECEC');
+const SubHeader = ({ 
+  listVideoCategories, 
+  onFilterVideo, 
+  onShowAllVideo }) => {
     return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}>
             <View style={styles.container}>
                 <View style={styles.left}>
                     <View style={styles.explore}>

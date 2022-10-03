@@ -1,11 +1,11 @@
 import axiosClient from './axiosClient';
-const key = 'AIzaSyBExIRi0i7yTE9MkhJYyGVDdKx_3qv0oDk';
+const key = 'AIzaSyAjJPWqSvuu7F-sDjy8kxjdWnvL2KXTGUo';
 const videoApi = {
-    getVideo() {
+    getVideoMostPopular() {
         const url = `/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=VN&key=${key}`;
         return axiosClient.get(url);
     },
-    getOneVideo(videoId) {
+    getVideo(videoId) {
         const url = `/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${key}`;
         return axiosClient.get(url);
     },

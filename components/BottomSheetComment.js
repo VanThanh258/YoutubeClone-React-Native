@@ -96,6 +96,7 @@ const BottomSheetComment = forwardRef((props, ref) => {
 
     const rBottomSheetStyle = useAnimatedStyle(() => {
         return {
+            height: -translateY.value,
             transform: [{ translateY: translateY.value }],
         };
     });
@@ -159,7 +160,7 @@ export default BottomSheetComment;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        height: screenHeight,
+        //height: screenHeight,
         width: '100%',
         backgroundColor: 'white',
         position: 'absolute',

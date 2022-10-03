@@ -1,7 +1,9 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 
 const Channel = ({ title, subscribe, avatar }) => {
+    const [sub, setSub] = useState(false);
+
     return (
         <View style={styles.container}>
             <View
@@ -18,7 +20,15 @@ const Channel = ({ title, subscribe, avatar }) => {
                 </View>
             </View>
             <View>
-                <Text style={styles.sub}>SUBCRIBE</Text>
+                {sub === false ? (
+                    <TouchableOpacity onPress={() => setSub(!sub)}>
+                        <Text style={styles.red}>Đăng ký</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={() => setSub(!sub)}>
+                        <Text style={styles.gray}>Đã đăng ký</Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -52,7 +62,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#6C6C6C',
     },
-    sub: {
+    red: {
         color: '#FF0000',
+    },
+    gray: {
+        color: 'gray',
     },
 });
