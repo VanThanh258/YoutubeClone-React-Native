@@ -47,7 +47,7 @@ const Search = ({ navigation }) => {
                 JSON.stringify(updateListVideoId),
             );
             const action =
-                videoIdHistorySliceAction.saveListIdVideo(updateListVideoId);
+                videoIdHistorySliceAction.saveListVideoID(updateListVideoId);
             dispatch(action);
             const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
             dispatch(actionUpdateVideoId);

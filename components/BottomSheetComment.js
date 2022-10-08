@@ -19,6 +19,7 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { showTime, showLike } from '../utils/video';
 
 const screenHeight = Dimensions.get('window').height;
 const MAX_TRANSLATE_Y = -screenHeight;
@@ -26,37 +27,6 @@ const bottomSheetHeight = screenHeight - screenHeight / 3.5;
 
 const BottomSheetComment = forwardRef((props, ref) => {
     const listComment = useSelector((state) => state.comment.listComment);
-
-    const showTime = (date) => {
-        let timeString;
-        let datePublicVideo = new Date(date);
-        let dateNow = new Date();
-        let time = dateNow - datePublicVideo;
-        if (time > 31104000000) {
-            timeString =
-                Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + ' năm trước';
-        } else if (time > 2592000000) {
-            timeString =
-                Math.floor(time / 1000 / 60 / 60 / 24 / 30) + ' tháng trước';
-        } else if (time > 86400000) {
-            timeString = Math.floor(time / 1000 / 60 / 60 / 24) + ' ngày trước';
-        } else if (time > 3600000) {
-            timeString = Math.floor(time / 1000 / 60 / 60) + ' giờ trước';
-        } else if (time > 60000) {
-            timeString = ' vài phút trước';
-        }
-        return timeString;
-    };
-
-    const showLike = (like) => {
-        let likeCount;
-        if (like == 0) {
-            likeCount = '';
-        } else {
-            likeCount = like;
-        }
-        return likeCount;
-    };
 
     const translateY = useSharedValue(0);
 

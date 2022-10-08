@@ -27,7 +27,9 @@ const channelSlice = createSlice({
         });
     },
 });
+
 export const channelSliceAction = channelSlice.actions;
+
 export const fetchChannel = createAsyncThunk(
     'channel/fetchChannel',
     async (id) => {

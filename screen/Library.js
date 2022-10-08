@@ -1,7 +1,6 @@
 import { View, Text, Button, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Header from '../components/Header';
-import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import VideoHistoryCard from '../components/VideoHistoryCard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +9,6 @@ import { videoSliceAction } from '../src/store/videoSlice';
 import { channelSliceAction } from '../src/store/channelSlice';
 
 const Library = ({ navigation }) => {
-    const dispatch = useDispatch();
     const listVideoId = useSelector(
         (state) => state.videoIdHistory.listVideoIdHistory,
     );
@@ -28,13 +26,7 @@ const Library = ({ navigation }) => {
     };
 
     const handleNavigationtoVideoPlayer = (item) => {
-        const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
-        dispatch(actionUpdateVideoId);
-        const actionUpdateChannelId = channelSliceAction.updateChannelId(
-            item.snippet.channelId,
-        );
-        dispatch(actionUpdateChannelId);
-        navigation.navigate('VideoPlayer');
+        
     };
     return (
         <View>
@@ -53,8 +45,8 @@ const Library = ({ navigation }) => {
                     );
                 })}
             </ScrollView>
-            <TouchableOpacity style={{ margin: 10 }} onPress={handleRemove}>
-                <Button title="Delete History" />
+            <TouchableOpacity style={{ margin: 10 }}>
+                <Button title="Delete History" onPress={handleRemove} />
             </TouchableOpacity>
         </View>
     );

@@ -15,11 +15,19 @@ import VideoCard from '../components/VideoCard';
 import BottomSheetDetail from '../components/BottomSheetDetail';
 import { fetchComment } from '../src/store/commentSlice';
 import BottomSheetComment from '../components/BottomSheetComment';
+import {
+    showLike,
+    showView,
+    renderTextWithBreakLines,
+    showTime,
+    showSubscribe,
+    showComment,
+} from '../utils/video';
 
 const screenHeight = Dimensions.get('window').height;
 const bottomSheetHeight = screenHeight - screenHeight / 3.5;
 
-const VideoPlayer = ({ navigation }) => {
+const VideoPlayer = () => {
     const dispatch = useDispatch();
     const videoId = useSelector((state) => state.video.videoId);
     const listVideo = useSelector((state) => state.video.listVideo);
@@ -49,82 +57,6 @@ const VideoPlayer = ({ navigation }) => {
     useEffect(() => {
         dispatch(fetchComment(videoId));
     }, [videoId]);
-
-    const renderTextWithBreakLines = (text) => {
-        return text?.split(`\n`).map((txt, i) => (
-            <Text key={i}>
-                {txt}
-                {'\n'}
-            </Text>
-        ));
-    };
-
-    const showTime = (date) => {
-        let timeString;
-        let datePublicVideo = new Date(date);
-        let dateNow = new Date();
-        let time = dateNow - datePublicVideo;
-        if (time > 31104000000) {
-            timeString =
-                Math.floor(time / 1000 / 60 / 60 / 24 / 30 / 12) + ' năm trước';
-        } else if (time > 2592000000) {
-            timeString =
-                Math.floor(time / 1000 / 60 / 60 / 24 / 30) + ' tháng trước';
-        } else if (time > 86400000) {
-            timeString = Math.floor(time / 1000 / 60 / 60 / 24) + ' ngày trước';
-        } else if (time > 3600000) {
-            timeString = Math.floor(time / 1000 / 60 / 60) + ' giờ trước';
-        } else if (time > 60000) {
-            timeString = ' vài phút trước';
-        }
-        return timeString;
-    };
-
-    const showView = (view) => {
-        let viewString;
-        if (view > 1000000) {
-            viewString = (view / 1000000).toFixed(1) + ' Tr' + ' lượt xem';
-        } else if (view > 1000) {
-            viewString = (view / 1000).toFixed(0) + ' N' + ' lượt xem';
-        }
-        return viewString;
-    };
-
-    const showLike = (like) => {
-        let likeString;
-        if (like > 1000000) {
-            likeString = (like / 1000000).toFixed(0) + ' Tr';
-        } else if (like > 10000) {
-            likeString = (like / 10000).toFixed(0) + ' N';
-        } else if (like > 1000) {
-            likeString = (like / 1000).toFixed(1) + ' N';
-        }
-        return likeString;
-    };
-
-    const showSubscribe = (sub) => {
-        let subString;
-        if (sub > 10000000) {
-            subString = (sub / 1000000).toFixed(1) + ' Tr subscribe';
-        } else if (sub > 1000000) {
-            subString = (sub / 1000000).toFixed(2) + ' Tr subscribe';
-        } else if (sub > 1000) {
-            subString = (sub / 1000).toFixed(0) + ' N subscribe';
-        }
-        return subString;
-    };
-
-    const showComment = (comment) => {
-        let commentString;
-        if (comment > 1000000) {
-            commentString = (comment / 1000000).toFixed(1) + ' Tr';
-        } else if (comment > 1000) {
-            commentString = (comment / 1000).toFixed(0) + ' N';
-        } else {
-            commentString = comment;
-        }
-        return commentString;
-    };
 
     const viewString = showView(video.statistics.viewCount);
     const timeString = showTime(video.snippet.publishedAt);

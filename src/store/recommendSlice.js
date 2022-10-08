@@ -21,6 +21,7 @@ const recommendSlice = createSlice({
 });
 
 export const recommendSliceAction = recommendSlice.actions;
+
 export const fetchRecommend = createAsyncThunk(
     'recommend/fetchRecommend',
     async (text) => {

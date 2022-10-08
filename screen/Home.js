@@ -13,7 +13,6 @@ import {
 import { channelSliceAction } from '../src/store/channelSlice';
 import { fetchVideoCategories } from '../src/store/videoCategoriesSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRef } from 'react';
 import { videoIdHistorySliceAction } from '../src/store/videoIdHistorySlice';
 
 const headerHeight = Constants.statusBarHeight + 80;
@@ -46,7 +45,7 @@ const Home = ({ navigation }) => {
         AsyncStorage.getItem('videoIdHistory').then((value) => {
             if (value) {
                 const list = JSON.parse(value);
-                const action = videoIdHistorySliceAction.saveListIdVideo(list);
+                const action = videoIdHistorySliceAction.saveListVideoID(list);
                 dispatch(action);
             }
         });
@@ -86,7 +85,7 @@ const Home = ({ navigation }) => {
                 JSON.stringify(updateListVideoId),
             );
             const action =
-                videoIdHistorySliceAction.saveListIdVideo(updateListVideoId);
+                videoIdHistorySliceAction.saveListVideoID(updateListVideoId);
             dispatch(action);
             const actionUpdateVideoId = videoSliceAction.updateVideoId(item.id);
             dispatch(actionUpdateVideoId);

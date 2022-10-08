@@ -10,7 +10,7 @@ const WatchVideo = ({ videoId }) => {
     useEffect(() => {
         setTimeout(() => {
             setIsPlay(true);
-        }, 1000);
+        }, 500);
     }, []);
 
     if (!isPlay) return null;
@@ -28,5 +28,3 @@ const WatchVideo = ({ videoId }) => {
 };
 
 export default WatchVideo;
-
-const styles = StyleSheet.create({});

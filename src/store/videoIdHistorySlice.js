@@ -6,7 +6,7 @@ const videoIdHistorySlice = createSlice({
         listVideoIdHistory: [],
     },
     reducers: {
-        saveListIdVideo(state, action) {
+        saveListVideoID(state, action) {
             state.listVideoIdHistory = action.payload;
         },
     },

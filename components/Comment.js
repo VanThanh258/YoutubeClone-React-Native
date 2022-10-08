@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     avatar: {
         width: 20,
         height: 20,
-        backgroundColor: 'green',
+        backgroundColor: 'white',
         borderRadius: 10,
     },
 });
